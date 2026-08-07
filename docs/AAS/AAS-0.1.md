@@ -1,6 +1,6 @@
 # AAS – AILEXSI Architecture Specification
 
-**Version:** 0.1.1 (Normative Patch applied)  
+**Version:** 0.1.2  
 **Status:** Normative  
 **Scope:** Domain Architecture, Bounded Contexts, Module Boundaries and System Contracts  
 **Dependencies:** ACS 0.1 + AKP 0.1.1 + AKP 0.2.1
@@ -85,6 +85,31 @@ interface EmbeddingProvider {
 ```
 
 AIProvider and EmbeddingProvider are independent contracts and may be replaced separately.
+
+---
+
+## AAS-22 DomainEvent (canonical, must match AAS-Buch2)
+
+```ts
+interface DomainEvent<T = unknown> {
+  eventId: UUID;                 // required, unique
+  eventType: string;             // required
+  aggregateId: UUID;             // required
+  aggregateType: string;         // required
+  aggregateVersion: Version;     // required, strict ordering per aggregate
+  timestamp: Timestamp;          // required, ISO-8601 UTC
+  payload: T;                    // required
+  causationId?: UUID;            // optional
+  correlationId?: UUID;          // optional
+  idempotencyKey: string;        // required, unique
+}
+```
+
+**Rules**
+- Events of the same aggregate MUST be applied in strictly ascending `aggregateVersion` order.
+- `idempotencyKey` MUST be unique across the Event Store. Duplicate keys are rejected.
+- DomainEvent is the persisted fact. EventEnvelope (if used) is only a transport wrapper.
+- Command ≠ Event. Commands produce Events; Queries never produce Events.
 
 ---
 
