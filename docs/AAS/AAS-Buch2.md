@@ -2,9 +2,9 @@
 
 ## Buch 2 – Canonical Domain Models & Event Contracts
 
-**Version:** 0.3 (Normative Patch 0.1 applied)  
+**Version:** 0.3.1 (self-contained, Identity types defined)  
 **Status:** Normative  
-**Dependencies:** ACS 0.1, AKP 0.2, AAS 0.1, Normative-Patch-0.1
+**Dependencies:** ACS 0.1, AKP 0.2.2, AAS 0.1.2
 
 ---
 
@@ -29,22 +29,15 @@ type PhysicsVersion = string;
 type FormulaVersion = string;
 
 type SourceType =
-  | "user"
-  | "conversation"
-  | "document"
-  | "web"
-  | "system"
-  | "agent"
-  | "import"
-  | "sensor"
-  | "event";
+  | "user" | "conversation" | "document" | "web"
+  | "system" | "agent" | "import" | "sensor" | "event";
 ```
 
 ---
 
-## AAS-28 TemporalMetadata (PATCH D)
+## AAS-28 TemporalMetadata
 
-Aligned with ACS Law 7. All fields are required. `validTo` and `deprecatedAt` may be `null`.
+All fields required. `validTo` and `deprecatedAt` may be `null`.
 
 ```ts
 interface TemporalMetadata {
@@ -65,7 +58,7 @@ interface TemporalMetadata {
 
 ---
 
-## AAS-29 Provenance (PATCH G)
+## AAS-29 Provenance
 
 ```ts
 interface Provenance {
@@ -191,7 +184,7 @@ interface CognitiveStateVector {
 }
 ```
 
-Note: This is a **projection**. The authoritative calculation lives in `PhysicsCalculation`.
+Note: This is a **projection**. Authoritative calculation lives in `PhysicsCalculation`.
 
 ---
 
@@ -299,7 +292,42 @@ interface TrustAssessment {
 
 ---
 
-## AAS-43 IdentitySnapshot
+## AAS-43 Identity Types (canonical)
+
+```ts
+interface IdentityValue {
+  id: UUID;
+  name: string;
+  description?: string;
+  weight: Score;
+  sourceMemoryIds: UUID[];
+}
+
+interface Goal {
+  id: UUID;
+  statement: string;
+  status: "active" | "paused" | "achieved" | "abandoned";
+  priority: Score;
+  targetDate?: Timestamp;
+  sourceMemoryIds: UUID[];
+}
+
+interface Role {
+  id: UUID;
+  name: string;
+  description?: string;
+  context?: string;
+}
+
+interface Principle {
+  id: UUID;
+  statement: string;
+  weight: Score;
+  sourceMemoryIds: UUID[];
+}
+```
+
+## AAS-43b IdentitySnapshot
 
 ```ts
 interface IdentitySnapshot {
@@ -441,7 +469,7 @@ interface PhysicsParameter {
 
 ---
 
-## AAS-50 DomainEvent + EventEnvelope (PATCH F)
+## AAS-50 DomainEvent + EventEnvelope
 
 ```ts
 interface DomainEvent<T = unknown> {
@@ -467,7 +495,7 @@ interface EventEnvelope<T = unknown> {
 
 ---
 
-## AAS-51 Communication Rule (PATCH E)
+## AAS-51 Communication Rule
 
 ```text
 Commands  → produce Domain Events (write side)
@@ -477,8 +505,6 @@ Queries   → use synchronous read Interfaces (read side, no side effects)
 ---
 
 ## AAS-52 Kernel Definition
-
-The AILEXSI Kernel is:
 
 ```text
 Memory + Provenance + History + Knowledge + Physics + Events + Temporal Model
