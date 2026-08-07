@@ -3,7 +3,7 @@
 **Version:** 0.1.2  
 **Status:** Normative (self-contained)  
 **Scope:** Mathematical and time-dependent core models of the AILEXSI Cortex  
-**Dependencies:** ACS, AKP-Parameter-Sets-0.1
+**Dependencies:** ACS 0.1.1, AKP-Parameter-Sets-0.1
 
 ---
 
@@ -112,8 +112,14 @@ Confidence          = Clamp(BaseEvidence × ContradictionFactor, 0, 1)
 | R_f | ReflectionInfluence | fraction of Reflections referencing this Cell | [0,1] |
 | A_f | ActionInfluence | fraction of ActionIntents influenced by Cell | [0,1] |
 | C_f | CreationInfluence | fraction of new Cells listing this as parent | [0,1] |
-| L_f | RelationInfluence | normalized accepted outgoing Relations | [0,1] |
+| L_f | RelationInfluence | see normalization below | [0,1] |
 | Q_f | RecallInfluence | fraction of successful Retrievals that returned Cell | [0,1] |
+
+**L_f normalization (canonical):**
+```text
+L_f = min(1, accepted_outgoing_relations / max(1, max_accepted_outgoing_in_system))
+```
+max_accepted_outgoing_in_system = maximum observed accepted outgoing relation count across all Cells at calculation time (minimum 1).
 
 Default weights (sum=1): w_r=0.25, w_a=0.20, w_c=0.20, w_l=0.20, w_q=0.15
 
