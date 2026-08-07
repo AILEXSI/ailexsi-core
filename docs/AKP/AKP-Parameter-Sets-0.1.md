@@ -1,7 +1,7 @@
 # AKP Parameter Sets 0.1
 
 **Status:** Normative  
-**Physics Version:** 0.1.1 / 0.2.1  
+**Physics Version:** 0.1.2 / 0.2.2  
 **Purpose:** Freeze all MVP default values so that identical inputs produce identical outputs.
 
 Every PhysicsCalculation must record the Parameter Set version used.
@@ -13,7 +13,7 @@ Every PhysicsCalculation must record the Parameter Set version used.
 ```text
 name:              TemporalDecayParameterSet
 version:           0.1
-physics_version:   0.1.1
+physics_version:   0.1.2
 
 T_scale:
   value:           31536000
@@ -28,7 +28,6 @@ lambda_decay:
   range:           [0, 1e-5]
   meaning:         Confirmation decay rate
   rationale:       MVP treats most knowledge as historically stable (λ = 0).
-                   Domain overrides (news, working memory) are explicit parameter overrides.
 
 mu_temporal_factor:
   value:           0.1
@@ -44,6 +43,7 @@ mu_temporal_factor:
 ```text
 name:              ResonanceWeights
 version:           0.1
+physics_version:   0.1.2
 
 w_r (Reflection):  0.25
 w_a (Action):      0.20
@@ -54,6 +54,12 @@ w_q (Recall):      0.15
 Σ = 1.00
 ```
 
+L_f (RelationInfluence) normalization:
+```text
+L_f = min(1, accepted_outgoing_relations / max(1, max_accepted_outgoing_in_system))
+```
+where max_accepted_outgoing_in_system is the maximum observed accepted outgoing relation count across all Cells at calculation time (minimum 1).
+
 ---
 
 ## AKP-PS-003 MassWeights
@@ -61,6 +67,7 @@ w_q (Recall):      0.15
 ```text
 name:              MassWeights
 version:           0.1
+physics_version:   0.1.2
 
 w_i (Importance):  0.30
 w_u (Usage):       0.25
@@ -77,11 +84,12 @@ w_r (Resonance):   0.20
 ```text
 name:              EntropyWeights
 version:           0.1
+physics_version:   0.1.2
 
-w_a (AgeDecay):    0.25
+w_a (AgeDecay):      0.25
 w_c (Contradiction): 0.30
-w_s (SourceDecay): 0.20
-w_u (Uncertainty): 0.25
+w_s (SourceDecay):   0.20
+w_u (Uncertainty):   0.25
 
 Σ = 1.00
 ```
@@ -93,6 +101,7 @@ w_u (Uncertainty): 0.25
 ```text
 name:              EnergyThresholds
 version:           0.1
+physics_version:   0.1.2
 
 high_Mass_threshold:     0.6
 weak_relation_threshold: 0.4
@@ -110,6 +119,7 @@ where count = number of high-Mass cells (Mass ≥ 0.6) that are either missing a
 ```text
 name:              RelationStrengthWeights
 version:           0.1
+physics_version:   0.2.2
 
 w_e (Evidence):    0.35
 w_c (Coherence):   0.25
@@ -128,6 +138,7 @@ LLM_hypothesis_max_S_r: 0.3
 ```text
 name:              RetrievalScoreWeights
 version:           0.1
+physics_version:   0.2.2
 
 w_s (Semantic):    0.30
 w_g (Graph):       0.15
@@ -152,6 +163,7 @@ Missing component values default to 0.0 (do not invent values).
 ```text
 name:              CentralityParameters
 version:           0.1
+physics_version:   0.2.2
 
 power_iteration_start:     uniform 1/N
 max_iterations:            100
@@ -172,13 +184,14 @@ MaxPossibleStrength:
 ```text
 name:              AttentionParameters
 version:           0.1
+physics_version:   0.2.2
 
-B_total:                   100          # abstract capacity units
-maintenance_reservation:   0.15         # 15 % of B_total
+B_total:                   100
+maintenance_reservation:   0.15
 exploration_rate_dream:    0.30
 exploration_rate_default:  0.10
 load_threshold:            0.85
-saturation_delta:          0.02         # top-k ranking change
+saturation_delta:          0.02
 
 Cost_i: declared by each operation (must be ≥ 0)
 Urgency: 1.0 if user-initiated or deadline, else = Temperature
@@ -199,6 +212,7 @@ Allocation algorithm (deterministic):
 ```text
 name:              DreamSafetyGates
 version:           0.1
+physics_version:   0.2.2
 
 T_g_minimum:       0.4
 N_minimum:         0.3
@@ -220,6 +234,7 @@ Never auto-promote to FACT.
 ```text
 name:              EmergenceAndIsland
 version:           0.1
+physics_version:   0.2.2
 
 Surprise  = 1 − max cosine similarity of the pair to any existing accepted Relation
 Coherence = min(Confidence_A, Confidence_B)

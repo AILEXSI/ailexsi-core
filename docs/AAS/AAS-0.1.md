@@ -3,7 +3,7 @@
 **Version:** 0.1.2  
 **Status:** Normative  
 **Scope:** Domain Architecture, Bounded Contexts, Module Boundaries and System Contracts  
-**Dependencies:** ACS 0.1 + AKP 0.1.1 + AKP 0.2.1
+**Dependencies:** ACS 0.1.1 + AKP 0.1.2 + AKP 0.2.2
 
 ---
 
