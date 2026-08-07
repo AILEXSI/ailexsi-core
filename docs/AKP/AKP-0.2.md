@@ -1,6 +1,6 @@
 # AKP – AILEXSI Kernel Physics
 
-**Version:** 0.2.1 (Normative Patch 0.1 – PATCH C applied)  
+**Version:** 0.2.1 (Normative Patch 0.1 + 0.2 applied)  
 **Status:** Normative  
 **Scope:** Graph Physics, Retrieval Physics and Cognitive Resource Model  
 **Dependencies:** AKP 0.1.1, ACS, Normative-Patch-0.1
@@ -32,14 +32,17 @@ D(v)  = deg(v) / max(1, N−1)
 WD(v) = Σ S_e / max(1, MaxPossibleStrength)
 ```
 
+MaxPossibleStrength = max_degree_observed_in_graph * 1.0  
+(Fallback when graph empty or no edges: 1.0)  
+Computed once per PhysicsCalculation and stored in the parameter_set.
+
 Eigenvector (power iteration):
-- Start: uniform 1/N
+- Start vector: uniform 1/N
 - Max iterations: 100
-- Tolerance: 1e-6
+- Convergence tolerance: 1e-6
 - Isolated nodes → 0
 - Empty graph → all 0
-
-Normalized to [0,1].
+- Result normalized to [0,1]
 
 ---
 
@@ -94,7 +97,7 @@ Score(Q,M)      = Clamp(Σ w_i · signal_i, 0, 1)
 
 ## AKP-22–24 Temporal, Pipeline, Diversity
 
-TemporalRelevance = e^(−λ·Δt) when domain enables decay.  
+TemporalRelevance = e^(−λ·Δt) when domain enables decay (default λ = 0).  
 Full pipeline as previously specified.  
 Diversity: same independenceGroup or cosine > 0.92 → down-rank ×0.5.
 
@@ -103,7 +106,7 @@ Diversity: same independenceGroup or cosine > 0.92 → down-rank ×0.5.
 ## AKP-25–30 Attention Budget & Priority
 
 ```text
-B_total = configurable capacity units
+B_total = configurable capacity units (default 100)
 Priority = Clamp(I × Relevance × Urgency × Potential × optional Trust, 0, 1)
 ExplorationRate default 0.3 (Dream) / 0.1 otherwise
 Load > 0.85 → drop lowest Priority items
@@ -116,7 +119,7 @@ Saturation when top-k ranking delta < 0.02
 
 ```text
 BridgePotential     = Bridge(A) × Bridge(B)
-AttentionAllocation = remaining Budget fraction
+AttentionAllocation = remaining_Budget / B_total
 D = Clamp(E_A × E_B × BridgePotential × N × T_g × AttentionAllocation × (1 − S_r), 0, 1)
 ```
 
@@ -156,4 +159,4 @@ All previous I1–I10 invariants remain in force.
 
 ## Status
 
-AKP 0.2.1 is fully formalized for the MVP. All previously undefined symbols now have explicit definitions, default parameters and ranges.
+AKP 0.2.1 is fully formalized for the MVP. All previously undefined symbols have explicit definitions, default parameters and ranges.
