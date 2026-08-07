@@ -1,6 +1,6 @@
 # AILEXSI MASTER BUILD CONTRACT
 
-**AMBC 0.1**  
+**AMBC 0.1.1**  
 **Status:** EXECUTABLE / NORMATIVE  
 **Target:** First Artificial Cortex  
 **Architecture:** Modular Monolith  
@@ -13,7 +13,7 @@
 Normative sources in this order:
 
 ```text
-ACS → AKP → AAS → ABS → AUDIT → AMBC
+ACS → AKP → AAS → ABS → AUDIT → AMBC → BUILD MANIFEST
 ```
 
 In case of conflict the higher-ranking specification applies.  
@@ -98,13 +98,13 @@ Microservices · Kubernetes · Kafka · Neo4j · dedicated Vector-DB · autonomo
 
 ```text
 01 Bootstrap
-02 Repository
-03 Contracts
-04 Database
-05 Event Store
+02 Repository Skeleton
+03 Contracts (canonical models, Zod schemas)
+04 Physics Conformance Suite          ← HARD GATE
+05 Database + Event Store
 06 Memory
 07 Projection
-08 Physics
+08 Physics Implementation (must pass Conformance Suite)
 09 Knowledge
 10 Embeddings
 11 Retrieval
@@ -120,6 +120,8 @@ Microservices · Kubernetes · Kafka · Neo4j · dedicated Vector-DB · autonomo
 21 Docker
 22 Documentation
 ```
+
+**Hard rule:** Phases 05–22 may not begin until Phase 04 (Physics Conformance Suite) is fully green.
 
 ---
 
@@ -141,7 +143,7 @@ Error → **STOP → FIX → TEST → CONTINUE**
 
 ## 10. Mandatory Gates
 
-1. **Physics Conformance Suite** first  
+1. **Physics Conformance Suite** (Phase 04) – must be green before any domain implementation  
 2. **Determinism Gate** (same inputs → same outputs)  
 3. **Event Replay Gate** (DELETE projections → REPLAY → identical state)  
 4. **Architecture Tests** (import prohibitions, Dream ≠ Fact, History append-only)  
@@ -157,7 +159,7 @@ The agent does **not** start with code.
 STEP 0  Repository Analysis
 STEP 1  Dependency Audit
 STEP 2  Normative Cross-Check against ACS / AKP / AAS / ABS / AUDIT / AMBC / Build Manifest
-STEP 3  Blocker Report (Conflicts, Missing Definitions, Unresolved Contracts, Dependency Gaps, Architecture Violations)
+STEP 3  Blocker Report
 
 No implementation until the Blocker Report is delivered and acknowledged.
 
@@ -204,8 +206,7 @@ Before writing or modifying implementation code:
 3. Establish the normative hierarchy.
 4. Perform repository analysis.
 5. Perform dependency audit.
-6. Cross-check the implementation against:
-   ACS → AKP → AAS → ABS → AUDIT → AMBC → BUILD MANIFEST.
+6. Cross-check against ACS → AKP → AAS → ABS → AUDIT → AMBC → BUILD MANIFEST.
 7. Produce a blocker report.
 
 Do NOT implement anything before STEP 7 is complete.
