@@ -1,7 +1,7 @@
 # AILEXSI Core Specification (ACS)
 
-**Version:** 0.1  
-**Status:** Normative Draft  
+**Version:** 0.1.1  
+**Status:** Normative  
 **Scope:** Philosophy, Mission, Definition, Cognitive Laws, Principle Zero
 
 ---
@@ -71,7 +71,7 @@ These laws are **non-negotiable**. Every implementation must enforce them.
 **Law 1 – Source Integrity / Provenance**  
 Every Memory Cell must possess a traceable Provenance.  
 Factual claims additionally require Evidence.  
-(A personal idea can originate from the user, a conversation, an imported document, a web source, a sensor/event, or system inference.)
+Allowed origins: user, conversation, document, web, sensor, event, system, agent, import.
 
 **Law 2 – Immutability of History**  
 Every change to a Memory Cell produces a new version. The history is append-only.
@@ -80,7 +80,12 @@ Every change to a Memory Cell produces a new version. The history is append-only
 Reflection and Dream Mode may never alter original data of a Memory Cell. They only produce new Cells, Relations, or Hypotheses.
 
 **Law 4 – Dream Mode Constraint**  
-Dream Mode produces exclusively Hypotheses (Lifecycle = hypothesis). Never Facts.
+Dream Mode produces exclusively Hypotheses / Candidates.  
+Canonical representation:
+- `DreamCandidate.status` ∈ {generated, reviewed, accepted, rejected}
+- When accepted as knowledge, a new Memory Cell may be created with `lifecycle.state = "hypothesis"`
+- Never `lifecycle.state = "active"` without explicit human or authorized promotion
+- `DreamCandidate ≠ Fact`
 
 **Law 5 – Trust Separation**  
 Trust scores may never be calculated by an LLM alone. LLM suggestions must be calibrated by Evidence, History, and manual/heuristic rules.
@@ -89,13 +94,14 @@ Trust scores may never be calculated by an LLM alone. LLM suggestions must be ca
 Every automatic decision (prioritization, archival, relation strength, Dream suggestion) must be able to deliver an explainable justification.
 
 **Law 7 – Time as Dimension**  
-Time is not a simple timestamp column. Every Memory Cell possesses at least:
-- `created_at`
-- `observed_at`
-- `valid_from`
-- `valid_to`
-- `confirmed_at`
-- `deprecated_at`
+Time is not a simple timestamp column. Every Memory Cell possesses at least the six temporal fields.
+
+**Canonical field names (AAS / implementation):**
+```text
+createdAt, observedAt, validFrom, validTo, confirmedAt, deprecatedAt
+```
+
+ACS prose may use snake_case for readability; the **canonical contract is camelCase** as defined in AAS-Buch2 TemporalMetadata. Implementations MUST use the AAS field names.
 
 Knowledge is time-dependent.
 
