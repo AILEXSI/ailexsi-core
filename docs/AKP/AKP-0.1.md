@@ -1,97 +1,49 @@
 # AKP – AILEXSI Kernel Physics
 
-**Version:** 0.1  
-**Status:** Normative Draft  
+**Version:** 0.1.1 (Normative Patch 0.1 – PATCH B applied)  
+**Status:** Normative  
 **Scope:** Mathematical and time-dependent core models of the AILEXSI Cortex  
-**Dependencies:** ACS (Cognitive Laws, Principle Zero)
+**Dependencies:** ACS, Normative-Patch-0.1
 
 ---
 
 ## AKP-0 Fundament
 
 ### 0.1 Wertebereich
-
-All dimensionless cognitive scores are normalized to the interval [0, 1] unless explicitly specified otherwise.
-
-```text
-0 = minimal
-1 = maximal
-```
+All dimensionless cognitive scores are normalized to [0, 1] unless explicitly specified otherwise.
 
 ### 0.2 Determinismus
-
-Given identical input, identical parameters, and identical Physics version, the Engine must deliver the same result.
-
-If randomness is required, the used seed becomes part of the Event and must be persisted.
+Identical input + parameters + Physics version → identical output. Random seed must be persisted when used.
 
 ### 0.3 Keine versteckten Parameter
-
-Every formula may use only explicitly declared parameters. Every parameter possesses:
-- name
-- value
-- range
-- unit (if applicable)
-- source
-- version
+Every parameter is explicitly declared (name, value, range, unit, source, version).
 
 ### 0.4 Physik-Engine-Grenzen
-
-The Physics Engine may:
-- not interpret texts
-- not invent facts
-- not make semantic decisions
-- not call LLMs or external APIs
-- not mutate Memory Cells directly
-- not invent Trust values on its own
-
-It calculates numbers and graphs from numbers and graphs. Nothing more.
+No LLMs, no databases, no GUIs, no network, no mutations, no semantic decisions. Pure calculation only.
 
 ---
 
 ## AKP-1 Zeit als Dimension
 
-Every Memory Cell carries at least the following timestamps:
-
-| Field          | Meaning                                      |
-|----------------|----------------------------------------------|
-| `created_at`   | When AILEXSI created the Cell                |
-| `observed_at`  | When the underlying information was observed |
-| `valid_from`   | From when the statement shall apply          |
-| `valid_to`     | Until when the statement shall apply         |
-| `confirmed_at` | When it was last confirmed                   |
-| `deprecated_at`| When it was marked as no longer current      |
-
-### 1.1 Age
+Six timestamps per ACS Law 7 / TemporalMetadata (PATCH D).
 
 ```text
 Age(t) = (t − created_at) / T_scale
+D(t)   = e^(−λ · Δt)          # Confirmation Decay
 ```
-
-`T_scale` is domain-specific (e.g. 1 year for stable knowledge, 1 day for news).
-
-### 1.2 Confirmation Decay
-
-```text
-D(t) = e^(−λ · Δt)
-```
-
-where `Δt` is the time since the last relevant confirmation and `λ` is the domain-specific decay rate.  
-Historical facts may have `λ ≈ 0`.
 
 ---
 
 ## AKP-2 Primitive Cognitive Signals
 
-These signals are the only allowed building blocks for derived quantities. They contain no circularity.
-
-| Signal              | Symbol | Range   | Description |
-|---------------------|--------|---------|-------------|
-| Importance          | I      | [0,1]   | Explicit or heuristic importance |
-| Usage               | U      | [0,1]   | Actual usage frequency |
-| Evidence Strength   | E      | [0,1]   | Strength of available evidence |
-| Source Diversity    | SD     | [0,1]   | Independence of sources |
-| Contradiction       | C      | [0,1]   | Measure of contradictory evidence |
-| Novelty             | N      | [0,1]   | Distance from existing knowledge space |
+| Signal | Symbol | Range | How obtained |
+|--------|--------|-------|--------------|
+| Importance | I | [0,1] | Explicit user priority or heuristic |
+| Usage | U | [0,1] | Normalized access count in rolling window |
+| Evidence Strength | E | [0,1] | Aggregated reliability of linked Evidence |
+| Source Diversity | SD | [0,1] | Fraction of independent independenceGroups |
+| Contradiction | C | [0,1] | Strength of contradicting Evidence |
+| Novelty | N | [0,1] | 1 − max cosine similarity to existing Cells |
 
 ---
 
@@ -103,66 +55,67 @@ ContradictionFactor = 1 − C
 Confidence = Clamp(BaseEvidence × ContradictionFactor, 0, 1)
 ```
 
-Personal user statements can have high Confidence regarding their provenance without thereby being objectively true.
-
 ---
 
-## AKP-4 Memory Resonance
+## AKP-4 Memory Resonance (formalized)
 
-Resonance measures **actual observed influence**, not mere mention frequency.
+| Symbol | Name | MVP Definition | Range |
+|--------|------|----------------|-------|
+| R_f | ReflectionInfluence | fraction of Reflections referencing this Cell | [0,1] |
+| A_f | ActionInfluence | fraction of ActionIntents influenced by Cell | [0,1] |
+| C_f | CreationInfluence | fraction of new Cells listing this as parent | [0,1] |
+| L_f | RelationInfluence | normalized accepted outgoing Relations | [0,1] |
+| Q_f | RecallInfluence | fraction of successful Retrievals that returned Cell | [0,1] |
 
-Raw value:
-
-```text
-R_raw = w_r · R_f + w_a · A_f + w_c · C_f + w_l · L_f + w_q · Q_f
-```
-
-with ∑ w_i = 1 (version-controlled weights).
-
-Temporally weighted:
+Default weights (sum=1): w_r=0.25, w_a=0.20, w_c=0.20, w_l=0.20, w_q=0.15
 
 ```text
-R(t) = R_raw × TemporalFactor(t)
+R_raw = w_r·R_f + w_a·A_f + w_c·C_f + w_l·L_f + w_q·Q_f
+TemporalFactor(t) = e^(−μ · Age(t))     # default μ=0.1
+R(t) = Clamp(R_raw × TemporalFactor(t), 0, 1)
 ```
 
 ---
 
 ## AKP-5 Memory Mass
 
-```text
-M_raw = w_i · I + w_u · U + w_c · Confidence + w_r · R
-Mass = Clamp(M_raw, 0, 1)
-```
+Default weights: w_i=0.30, w_u=0.25, w_c=0.25, w_r=0.20
 
-Resonance may flow in here because it is calculated independently from observed influence. No circularity.
+```text
+M_raw = w_i·I + w_u·U + w_c·Confidence + w_r·R
+Mass  = Clamp(M_raw, 0, 1)
+```
 
 ---
 
-## AKP-6 Memory Temperature
-
-Temperature describes **current activity**, not meaning.
+## AKP-6 Memory Temperature (formalized)
 
 ```text
-T = AccessRate × RecentInfluence × WorkingSetFactor
+AccessRate       = min(1, accesses_in_last_24h / 10)
+RecentInfluence  = max(R_f, A_f, Q_f) measured in last 7 days
+WorkingSetFactor = 1 if in current Working Set else 0.3
+T = Clamp(AccessRate × RecentInfluence × WorkingSetFactor, 0, 1)
 ```
-
-A Cell with high Mass can simultaneously be very cold.
 
 ---
 
-## AKP-7 Memory Entropy
-
-Entropy = information instability / uncertainty (not merely age).
+## AKP-7 Memory Entropy (formalized)
 
 ```text
-H = w_a · AgeDecay + w_c · C + w_s · SourceDecay + w_u · Uncertainty
+AgeDecay    = 1 − D(t)
+SourceDecay = 1 − average(Evidence.reliability)
+Uncertainty = 1 − Confidence
+```
+
+Default weights: w_a=0.25, w_c=0.30, w_s=0.20, w_u=0.25
+
+```text
+H = Clamp(w_a·AgeDecay + w_c·C + w_s·SourceDecay + w_u·Uncertainty, 0, 1)
 ```
 
 ---
 
 ## AKP-8 Memory Velocity
-
-Cognitive Vector of change:
 
 ```text
 V_M = ΔMass / Δt
@@ -172,102 +125,46 @@ V_T = ΔT / Δt
 
 ---
 
-## AKP-9 Memory Energy
-
-Metaphorical name. Mathematical meaning:
+## AKP-9 Memory Energy (formalized)
 
 ```text
-Energy = N × ConnectivityPotential × (1 − H) × R
-```
-
-Describes the potential for new connections.
-
----
-
-## AKP-10 Memory Gravity
-
-Ranking signal (not a physical quantity):
-
-```text
-G = Mass × R × Connectivity
+ConnectivityPotential = min(1, (weak_or_missing_relations_to_high_Mass_Cells) / 5)
+Energy = Clamp(N × ConnectivityPotential × (1 − H) × R, 0, 1)
 ```
 
 ---
 
-## AKP-11 Dream Mode
-
-Dream Mode produces exclusively Hypotheses.
-
-For two Cells A and B:
+## AKP-10 Memory Gravity (formalized)
 
 ```text
-DreamScore(A,B) = E_A · E_B · R_A · R_B · (1 − S) · N · T_g
+Connectivity = min(1, WeightedDegree / 10)
+G = Clamp(Mass × R × Connectivity, 0, 1)
 ```
-
-where:
-- S = existing relation strength
-- N = Novelty of the combination
-- T_g = Trust Gate
-
-**Output requirements (mandatory fields):**
-- source_cells
-- generation_method
-- dream_score
-- novelty_score
-- confidence
-- created_at
-- physics_version
-- llm_model (if used)
-- random_seed
 
 ---
 
-## AKP-12 Cognitive State Vector
-
-Every Memory Cell possesses the state:
+## AKP-11 Dream Mode (formalized)
 
 ```text
-C = [M, E, G, H, V, Cf, R, T, N]
+S   = existing Relation Strength (0 if none)
+T_g = min(Confidence_A, Confidence_B)
+N   = Novelty of the combination
+
+DreamScore(A,B) = Clamp(E_A · E_B · R_A · R_B · (1 − S) · N · T_g, 0, 1)
 ```
 
-(Mass, Energy, Gravity, Entropy, Velocity, Confidence, Resonance, Temperature, Novelty)
-
-This vector is time-dependent and versioned.
+**Safety Gate (all must pass):** T_g ≥ 0.4, N ≥ 0.3, S ≤ 0.5
 
 ---
 
-## AKP-13 Physics Versioning
+## AKP-12–14
 
-Every calculation stores:
-- physics_version
-- formula_version
-- parameter_set
-- timestamp
-- input_snapshot
-- output
-
-Historical scores remain reproducible.
-
----
-
-## AKP-14 Explicit Prohibitions
-
-The Physics Engine may **not**:
-- interpret texts
-- invent facts
-- make decisions
-- mutate user data
-- call LLMs or external systems
-- mutate Memory Cells
-- invent Trust on its own
-
-It calculates. Nothing more.
+Cognitive State Vector is a projection.  
+Physics Versioning is mandatory.  
+Physics Engine has no side effects and invents nothing.
 
 ---
 
 ## Status
 
-AKP 0.1 is implementable and testable.  
-The three corrections (Provenance, no circularity, pure calculation) are incorporated.
-
-Missing for AKP 0.2: Graph Physics, Retrieval Physics, Cognitive Resource Model (Attention Budget).
+AKP 0.1.1 is fully formalized for the MVP. All previously undefined symbols now have explicit MVP definitions and default parameters.

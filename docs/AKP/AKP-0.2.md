@@ -1,119 +1,73 @@
 # AKP – AILEXSI Kernel Physics
 
-**Version:** 0.2  
-**Status:** Normative Draft  
+**Version:** 0.2.1 (Normative Patch 0.1 – PATCH C applied)  
+**Status:** Normative  
 **Scope:** Graph Physics, Retrieval Physics and Cognitive Resource Model  
-**Dependencies:** AKP 0.1 + ACS (Cognitive Laws)
-
-Every formula in this document has a concrete purpose in the Cortex. No speculative mathematics.
+**Dependencies:** AKP 0.1.1, ACS, Normative-Patch-0.1
 
 ---
 
 ## AKP-15 Graph Physics
 
-The Knowledge Graph is a calculation space.  
-Memory Cell = Node. Relation = Edge.
-
 ### 15.1 Relation Strength
 
-```text
-S_r = w_e · E + w_c · C + w_t · T + w_u · U
-```
-
-with ∑ w_i = 1.
-
-- E = Evidence of the relationship
-- C = semantic coherence
-- T = temporal consistency
-- U = usage/confirmation of the relationship
-
-An LLM-proposed relation starts as a hypothesis and initially possesses low S_r.
-
-### 15.2 Relation Types (minimum set)
+Default weights (sum=1): w_e=0.35, w_c=0.25, w_t=0.20, w_u=0.20
 
 ```text
-supports, contradicts, extends, derived_from, inspired_by,
-causes, caused_by, references, answers, asks,
-belongs_to, part_of, depends_on, duplicates, similar_to, related_to
+S_r = Clamp(w_e·E + w_c·C + w_t·T + w_u·U, 0, 1)
 ```
 
-### 15.3 Directed vs. Undirected Relations
+LLM proposals start with S_r ≤ 0.3 and status = hypothesis.
 
-Standard: directed.  
-Symmetric types (`similar_to`, `related_to`, `duplicates`) may be modelled bidirectionally.
+### 15.2–15.3 Relation Types & Direction
+
+Minimum set as previously defined. Standard = directed. Symmetric types may be bidirectional.
 
 ---
 
 ## AKP-16 Node Centrality
 
-**Degree Centrality**
-
 ```text
-D(v) = deg(v) / (N − 1)
+D(v)  = deg(v) / max(1, N−1)
+WD(v) = Σ S_e / max(1, MaxPossibleStrength)
 ```
 
-**Weighted Degree**
+Eigenvector (power iteration):
+- Start: uniform 1/N
+- Max iterations: 100
+- Tolerance: 1e-6
+- Isolated nodes → 0
+- Empty graph → all 0
 
-```text
-WD(v) = Σ S_e / MaxPossibleStrength
-```
-
-**Eigenvector Centrality**  
-A Cell is central when it is connected to other central Cells.  
-Implementation: classic power-iteration algorithm (deterministic, versioned).
+Normalized to [0,1].
 
 ---
 
 ## AKP-17 Graph Gravity
 
-Extension of Gravity from AKP 0.1:
-
 ```text
-G_v = M_v × R_v × C_v × (1 + Centrality_v)
-G_v = Clamp(G_v, 0, 1)
+Connectivity_v = min(1, WD(v)/10)
+G_v = Clamp(M_v × R_v × Connectivity_v × (1 + Centrality_v), 0, 1)
 ```
 
 ---
 
 ## AKP-18 Knowledge Clusters
 
-Every cluster possesses:
-- cluster_id
-- density
-- cohesion
-- growth_rate
-- temperature
-- centrality
-
-**18.1 Density**
-
 ```text
-Density = ActualEdges / PossibleEdges
-```
-
-**18.2 Cohesion**
-
-```text
+Density  = ActualEdges / max(1, PossibleEdges)
 Cohesion = mean(S_internal)
-```
-
-**18.3 Growth**
-
-```text
-Growth = (ΔNodes + ΔEdges) / Δt
+Growth   = (ΔNodes + ΔEdges) / max(1, Δt)
 ```
 
 ---
 
 ## AKP-19 Knowledge Bridges
 
-**Bridge Score**
-
 ```text
-Bridge(v) = Centrality(v) × ClusterDiversity(v) × N_v
+ClusterDiversity(v) = distinct clusters connected by v / total_clusters
+Bridge(v) = Clamp(Centrality(v) × ClusterDiversity(v) × N_v, 0, 1)
 ```
-
-Cells with high Bridge Score connect otherwise separated knowledge domains and are preferred candidates for Dream Mode and Creativity.
 
 ---
 
@@ -121,205 +75,85 @@ Cells with high Bridge Score connect otherwise separated knowledge domains and a
 
 ```text
 Cost(e) = 1 − S_e
-Distance(A,B) = Σ (1 − S_e)  for e in path
+Distance(A,B) = sum of Costs on shortest path (∞ if unreachable)
 ```
-
-(weighted shortest path length)
 
 ---
 
 ## AKP-21 Retrieval Physics
 
-**Candidate Score** for Query Q and Cell M:
+Default weights (sum=1): w_s=0.30, w_g=0.15, w_t=0.10, w_r=0.15, w_m=0.10, w_c=0.10, w_n=0.10
 
 ```text
-Score(Q,M) = w_s S + w_g G + w_t T + w_r R + w_m M + w_c C + w_n N
-```
-
-with ∑ w_i = 1.
-
-- S = semantic similarity
-- G = Graph relevance
-- T = temporal relevance
-- R = Resonance
-- M = Mass
-- C = Confidence
-- N = Novelty-Fit to the Query
-
----
-
-## AKP-22 Temporal Relevance
-
-```text
-TemporalRelevance = e^(−λ Δt)
-```
-
-only active when the Knowledge Domain has temporal decay activated.
-
----
-
-## AKP-23 Cognitive Retrieval Pipeline
-
-```text
-Semantic Retrieval
-      ↓
-Graph Expansion
-      ↓
-Temporal Filtering
-      ↓
-Trust Filtering
-      ↓
-Resonance Ranking
-      ↓
-Diversity Filtering
-      ↓
-Final Context Window
+Graph relevance = 1 / (1 + Distance)
+Novelty-Fit     = 1 − |N_query − N_cell|
+Score(Q,M)      = Clamp(Σ w_i · signal_i, 0, 1)
 ```
 
 ---
 
-## AKP-24 Diversity Penalty
+## AKP-22–24 Temporal, Pipeline, Diversity
 
-Results that duplicate already strongly represented information are down-ranked.  
-Goal: maximal epistemic coverage, not maximal repetition.
-
----
-
-## AKP-25 Cognitive Attention Budget
-
-```text
-B_total = available cognitive capacity of a cycle
-```
-
-Every operation carries an estimated Cost.  
-Constraint:
-
-```text
-Σ Cost_i ≤ B_total
-```
+TemporalRelevance = e^(−λ·Δt) when domain enables decay.  
+Full pipeline as previously specified.  
+Diversity: same independenceGroup or cosine > 0.92 → down-rank ×0.5.
 
 ---
 
-## AKP-26 Cognitive Priority
+## AKP-25–30 Attention Budget & Priority
 
 ```text
-Priority = I × Relevance × Urgency × Potential × (optional: Trust)
+B_total = configurable capacity units
+Priority = Clamp(I × Relevance × Urgency × Potential × optional Trust, 0, 1)
+ExplorationRate default 0.3 (Dream) / 0.1 otherwise
+Load > 0.85 → drop lowest Priority items
+Saturation when top-k ranking delta < 0.02
 ```
 
 ---
 
-## AKP-27 Attention Competition
-
-Multiple processes (Reflection, Dream Mode, Indexing, Maintenance …) compete for the same budget.  
-Allocation occurs dynamically according to Priority and remaining budget.
-
----
-
-## AKP-28 Exploration vs. Exploitation
+## AKP-31 Dream Mode 2.0 (formalized)
 
 ```text
-ExplorationRate ∈ [0,1]
-ExploitationRate = 1 − ExplorationRate
+BridgePotential     = Bridge(A) × Bridge(B)
+AttentionAllocation = remaining Budget fraction
+D = Clamp(E_A × E_B × BridgePotential × N × T_g × AttentionAllocation × (1 − S_r), 0, 1)
 ```
-
-The rate is adjusted dynamically (uncertainty, novelty, available budget, Dream Mode active).
-
----
-
-## AKP-29 Cognitive Load
-
-```text
-Load = ContextSize / AttentionCapacity
-```
-
-When Load > Threshold, reduction is required (Cells, Graph depth, redundant sources).
-
----
-
-## AKP-30 Cognitive Saturation
-
-Beyond a defined point, additional context produces no significant benefit.  
-AILEXSI must know when enough knowledge is enough.
-
----
-
-## AKP-31 Dream Mode 2.0
-
-```text
-D = E_A × E_B × BridgePotential × N × T_g × AttentionAllocation × (1 − S_r)
-```
-
-Prefers distant but trustworthy knowledge domains.
 
 ---
 
 ## AKP-32 Dream Safety Gate
 
-A Dream candidate is only generated when:
-- T_g ≥ minimum_threshold
-- N ≥ minimum_threshold
-- S_r ≤ maximum_threshold
-
-Otherwise rejection.
+All must hold: T_g ≥ 0.4, N ≥ 0.3, S_r ≤ 0.5
 
 ---
 
 ## AKP-33 Emergence Score
 
 ```text
-Emergence = N × BridgePotential × Surprise × Coherence
+Surprise  = 1 − max similarity of pair to any accepted Relation
+Coherence = min(Confidence_A, Confidence_B)
+Emergence = Clamp(N × BridgePotential × Surprise × Coherence, 0, 1)
 ```
-
-High Emergence ≠ truth. Only unusual, potentially interesting connection.
 
 ---
 
-## AKP-34 Knowledge Island Detection
+## AKP-34 Island Score
 
 ```text
-IslandScore = Cohesion × (1 − ExternalConnectivity)
+ExternalConnectivity = fraction of edges leaving the cluster
+IslandScore = Clamp(Cohesion × (1 − ExternalConnectivity), 0, 1)
 ```
 
-Recognizes isolated knowledge domains and can deliberately seek bridges.
-
 ---
 
-## AKP-35 Cognitive Maintenance
+## AKP-35–36 Maintenance & Invariants
 
-A fixed share of the Attention Budget is reserved for maintenance:
-- Validation
-- Contradiction Detection
-- Index Maintenance
-- Graph Cleanup
-- Decay Calculation
-- Backup Verification
-
----
-
-## AKP-36 Invariants (automatically testable)
-
-| ID  | Invariant |
-|-----|-----------|
-| I1  | All scores lie in their defined range |
-| I2  | Identical inputs → identical outputs |
-| I3  | Physics-version change does not alter historical calculations |
-| I4  | Dream Mode produces no Fact-Cells |
-| I5  | Retrieval never uses exclusively semantic similarity |
-| I6  | Duplicates of the same source produce no artificial Source Diversity |
-| I7  | Attention Allocation never exceeds B_total |
-| I8  | High Emergence never automatically produces high Confidence |
-| I9  | Graph Centrality does not automatically mean Truth or Importance |
-| I10 | Physics possesses no side effects |
+15 % of Attention Budget reserved for maintenance by default.  
+All previous I1–I10 invariants remain in force.
 
 ---
 
 ## Status
 
-AKP 0.2 is content-complete.  
-We now possess:
-- primitive signals
-- derived cognitive states
-- Graph calculation space
-- Retrieval Physics
-- Attention-Budget model
-- Dream Mode with Safety Gates and Emergence
+AKP 0.2.1 is fully formalized for the MVP. All previously undefined symbols now have explicit definitions, default parameters and ranges.
