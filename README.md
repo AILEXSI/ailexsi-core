@@ -2,7 +2,7 @@
 
 **First Artificial Cortex**
 
-Private specification repository for the AILEXSI cognitive kernel.
+specification repository for the AILEXSI cognitive kernel.
 
 ## Specification Chain
 
