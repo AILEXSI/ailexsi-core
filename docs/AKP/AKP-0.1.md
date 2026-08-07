@@ -1,6 +1,6 @@
 # AKP – AILEXSI Kernel Physics
 
-**Version:** 0.1.1 (Normative Patch 0.1 – PATCH B applied)  
+**Version:** 0.1.1 (Normative Patch 0.1 + 0.2 applied)  
 **Status:** Normative  
 **Scope:** Mathematical and time-dependent core models of the AILEXSI Cortex  
 **Dependencies:** ACS, Normative-Patch-0.1
@@ -25,12 +25,43 @@ No LLMs, no databases, no GUIs, no network, no mutations, no semantic decisions.
 
 ## AKP-1 Zeit als Dimension
 
-Six timestamps per ACS Law 7 / TemporalMetadata (PATCH D).
+Six timestamps per ACS Law 7 / TemporalMetadata.
 
 ```text
 Age(t) = (t − created_at) / T_scale
-D(t)   = e^(−λ · Δt)          # Confirmation Decay
 ```
+
+`T_scale` is a PhysicsParameter:
+
+```text
+name:    T_scale
+value:   31536000          # seconds (1 year)
+unit:    s
+range:   [86400, 315360000] # 1 day … 10 years
+source:  system_default
+version: 0.1.1
+```
+
+Domain overrides must be stored in the parameter_set of every PhysicsCalculation.
+
+```text
+D(t) = e^(−λ · Δt)
+```
+
+where `Δt` = time since last relevant confirmation (`confirmed_at`).
+
+`λ` is a PhysicsParameter:
+
+```text
+name:    lambda_decay
+value:   0.0               # default for historical / stable knowledge
+unit:    1/s
+range:   [0, 1e-5]
+source:  system_default
+version: 0.1.1
+```
+
+Typical overrides: news = 1e-6, working memory = 1e-5. Must be part of parameter_set.
 
 ---
 
@@ -128,7 +159,18 @@ V_T = ΔT / Δt
 ## AKP-9 Memory Energy (formalized)
 
 ```text
-ConnectivityPotential = min(1, (weak_or_missing_relations_to_high_Mass_Cells) / 5)
+ConnectivityPotential = min(1, count / 5)
+```
+
+where:
+- high_Mass_Cell  := Mass ≥ 0.6
+- weak_relation   := existing Relation with S_r < 0.4
+- missing_relation := no Relation exists to a high_Mass_Cell that is within Graph Distance ≤ 2
+- count            = number of such weak or missing relations
+
+All thresholds are PhysicsParameters (defaults above).
+
+```text
 Energy = Clamp(N × ConnectivityPotential × (1 − H) × R, 0, 1)
 ```
 
@@ -167,4 +209,4 @@ Physics Engine has no side effects and invents nothing.
 
 ## Status
 
-AKP 0.1.1 is fully formalized for the MVP. All previously undefined symbols now have explicit MVP definitions and default parameters.
+AKP 0.1.1 is fully formalized for the MVP. All previously undefined symbols have explicit MVP definitions and default parameters.
