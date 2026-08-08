@@ -3,7 +3,7 @@
 **Version:** 0.1.2  
 **Status:** Normative  
 **Scope:** Domain Architecture, Bounded Contexts, Module Boundaries and System Contracts  
-**Dependencies:** ACS 0.1.1 + AKP 0.1.2 + AKP 0.2.2
+**Dependencies:** ACS 0.1.1 + AKP 0.1.3 + AKP 0.2.3
 
 ---
 
@@ -92,20 +92,20 @@ AIProvider and EmbeddingProvider are independent contracts and may be replaced s
 
 ```ts
 interface DomainEvent<T = unknown> {
-  eventId: UUID;                 // required, unique
-  eventType: string;             // required
-  aggregateId: UUID;             // required
-  aggregateType: string;         // required
-  aggregateVersion: Version;     // required, strict ordering per aggregate
-  timestamp: Timestamp;          // required, ISO-8601 UTC
-  payload: T;                    // required
-  causationId?: UUID;            // optional
-  correlationId?: UUID;          // optional
-  idempotencyKey: string;        // required, unique
+  eventId: UUID;
+  eventType: string;
+  aggregateId: UUID;
+  aggregateType: string;
+  aggregateVersion: Version;
+  timestamp: Timestamp;
+  payload: T;
+  causationId?: UUID;
+  correlationId?: UUID;
+  idempotencyKey: string;
 }
 ```
 
-**Rules**
+**Rules** (see AAS-Buch2 for full aggregateVersion and idempotencyKey semantics):
 - Events of the same aggregate MUST be applied in strictly ascending `aggregateVersion` order.
 - `idempotencyKey` MUST be unique across the Event Store. Duplicate keys are rejected.
 - DomainEvent is the persisted fact. EventEnvelope (if used) is only a transport wrapper.

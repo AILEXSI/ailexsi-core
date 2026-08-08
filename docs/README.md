@@ -37,15 +37,15 @@ Patches are historical records. All normative content must live inside the canon
 | Document | Path | Content |
 |----------|------|---------|
 | ACS 0.1.1 | `ACS/ACS-0.1.md` | Foundations, Cognitive Laws, Principle Zero |
-| AKP 0.1.2 | `AKP/AKP-0.1.md` | Core Physics – fully self-contained formulas |
-| AKP 0.2.2 | `AKP/AKP-0.2.md` | Graph, Retrieval, Attention, Dream – fully self-contained |
-| AKP Parameter Sets 0.1 | `AKP/AKP-Parameter-Sets-0.1.md` | Frozen MVP numeric defaults (physics 0.1.2 / 0.2.2) |
-| AKP Conformance Vectors 0.1 | `AKP/AKP-Conformance-Vectors-0.1.md` | Test vectors for Physics Conformance |
+| AKP 0.1.3 | `AKP/AKP-0.1.md` | Core Physics – fully self-contained formulas |
+| AKP 0.2.3 | `AKP/AKP-0.2.md` | Graph, Retrieval, Attention, Dream – fully self-contained |
+| AKP Parameter Sets 0.1 | `AKP/AKP-Parameter-Sets-0.1.md` | Frozen MVP numeric defaults (physics 0.1.3 / 0.2.3) |
+| AKP Conformance Vectors 0.1.1 | `AKP/AKP-Conformance-Vectors-0.1.md` | Test vectors for Physics Conformance |
 | AAS 0.1.2 | `AAS/AAS-0.1.md` | Bounded Contexts, DomainEvent, Communication |
-| AAS Buch 2 v0.3.1 | `AAS/AAS-Buch2.md` | Full Canonical Domain Models & Event Contracts |
-| AAS Buch 3 | `AAS/AAS-Buch3.md` | Runtime Architecture (Modular Monolith) |
-| AAS Buch 4 | `AAS/AAS-Buch4.md` | MVP Runtime |
-| ABS 0.1 | `ABS/ABS-0.1.md` | Executable Build Contract |
+| AAS Buch 2 v0.3.2 | `AAS/AAS-Buch2.md` | Full Canonical Domain Models & Event Contracts |
+| AAS Buch 3 v0.1.1 | `AAS/AAS-Buch3.md` | Runtime Architecture (Modular Monolith) |
+| AAS Buch 4 v0.1.1 | `AAS/AAS-Buch4.md` | MVP Runtime |
+| ABS 0.1.1 | `ABS/ABS-0.1.md` | Executable Build Contract |
 | AUDIT 0.1 | `AUDIT/Open-Source-Audit-0.1.md` | Reality Check |
 | AMBC 0.1.1 | `AMBC/AMBC-0.1.md` | Master Build Contract |
 | Build Manifest 0.1 | `BUILD/Build-Manifest-0.1.md` | Phase-by-phase checklist |
