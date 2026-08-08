@@ -42,7 +42,7 @@ Higher overrides lower. Canonical documents are the single source of truth.
 | AKP Graph/Retrieval | `AKP/AKP-0.2.md` | 0.2.5 |
 | AKP Parameter Sets | `AKP/AKP-Parameter-Sets-0.1.md` | physics 0.1.4 / 0.2.5 |
 | AKP Formula Registry | `AKP/AKP-Formula-Registry-0.1.md` | 0.1 |
-| AKP Conformance Vectors | `AKP/AKP-Conformance-Vectors-0.1.md` | 0.1.3 |
+| AKP Conformance Vectors | `AKP/AKP-Conformance-Vectors-0.1.md` | 0.1.4 |
 | AAS Domains | `AAS/AAS-0.1.md` | 0.1.2 |
 | AAS Models | `AAS/AAS-Buch2.md` | 0.3.4 |
 | AAS Runtime | `AAS/AAS-Buch3.md` | 0.2.0 |
@@ -56,6 +56,15 @@ Higher overrides lower. Canonical documents are the single source of truth.
 | Build Manifest | `BUILD/Build-Manifest-0.1.md` | 0.2.1 |
 | Patch 0.3 Anti-Deletion | `PATCHES/Normative-Patch-0.3-Anti-Deletion.md` | 0.3 |
 | Surface Check Script | `scripts/normative-surface-check.mjs` | 0.1 |
+
+## Phase 04
+
+```bash
+node scripts/normative-surface-check.mjs
+node phase04/run.mjs
+```
+
+Authoritative result: `phase04-report.json`.
 
 ## Agent Start Protocol
 

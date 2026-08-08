@@ -1,52 +1,410 @@
 {
-  "suite": "AKP Conformance Vectors 0.1.3",
-  "physics": { "core": "0.1.4", "graph": "0.2.5" },
-  "tolerance": { "score": 1e-6, "cosine": 1e-9 },
+  "suite": "AKP Conformance Vectors 0.1.4",
+  "physics": {
+    "core": "0.1.4",
+    "graph": "0.2.5"
+  },
+  "tolerance": {
+    "score": 1e-06,
+    "cosine": 1e-09
+  },
   "source": "docs/AKP/AKP-Conformance-Vectors-0.1.md",
   "vectors": [
-    {"cvId":"CV-01","executability":"BLOCKED","reason":"No canonical input/expectedOutput; only topic label 'Confidence' under CV-01..CV-26 prior suite retained","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-02","executability":"BLOCKED","reason":"No canonical fixture; topic Mass only","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-03","executability":"BLOCKED","reason":"No canonical fixture; topic RelationStrength only","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-04","executability":"BLOCKED","reason":"No canonical fixture; topic RetrievalScore only","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-05","executability":"BLOCKED","reason":"No canonical fixture; topic Dream 2.0 only — no numeric D expected","formulaId":"dream-2.0.0","blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-06","executability":"BLOCKED","reason":"No canonical fixture; gates only named","formulaId":"dream-safety-gate-1.0.0","blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-07","executability":"BLOCKED","reason":"No canonical fixture; gates only named","formulaId":"dream-safety-gate-1.0.0","blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-08","executability":"BLOCKED","reason":"No canonical fixture; topic Priority only","formulaId":"priority-1.0.0","blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-09","executability":"BLOCKED","reason":"No canonical fixture; EffectiveReliability only named","formulaId":"effective-reliability-1.0.0","blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-10","executability":"BLOCKED","reason":"No canonical fixture; Semantic Similarity only named","formulaId":"semantic-similarity-1.0.0","blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-11","executability":"BLOCKED","reason":"No canonical fixture; Diversity only named","formulaId":"diversity-selection-1.0.0","blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-12","executability":"BLOCKED","reason":"No canonical fixture; Urgency only named","formulaId":"priority-1.0.0","blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-13","executability":"BLOCKED","reason":"No canonical fixture; Symmetric integrity only named","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-14","executability":"BLOCKED","reason":"No canonical fixture; Symmetric integrity only named","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-15","executability":"BLOCKED","reason":"No canonical fixture; Explainability only named","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-16","executability":"BLOCKED","reason":"No canonical fixture; Connectivity count-once only named","formulaId":"connectivity-potential-1.0.0","blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-17","executability":"BLOCKED","reason":"No per-CV definition under 01..26","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-18","executability":"BLOCKED","reason":"No per-CV definition under 01..26","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-19","executability":"BLOCKED","reason":"No per-CV definition under 01..26","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-20","executability":"BLOCKED","reason":"No per-CV definition under 01..26","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-21","executability":"BLOCKED","reason":"No per-CV definition under 01..26","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-22","executability":"BLOCKED","reason":"No per-CV definition under 01..26","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-23","executability":"BLOCKED","reason":"No per-CV definition under 01..26","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-24","executability":"BLOCKED","reason":"No per-CV definition under 01..26","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-25","executability":"BLOCKED","reason":"No per-CV definition under 01..26","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-26","executability":"BLOCKED","reason":"No per-CV definition under 01..26","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-27","executability":"EXECUTABLE","formulaId":"importance-1.0.0","formulaVersion":"1.0.0","physicsVersion":"0.1.4","fixture":"fixtures/CV-27.json","sourceReference":"AKP-Conformance-Vectors-0.1.md §CV-27"},
-    {"cvId":"CV-28","executability":"EXECUTABLE","formulaId":"importance-1.0.0","formulaVersion":"1.0.0","physicsVersion":"0.1.4","fixture":"fixtures/CV-28.json","sourceReference":"AKP-Conformance-Vectors-0.1.md §CV-28"},
-    {"cvId":"CV-29","executability":"EXECUTABLE","formulaId":"entropy-1.0.0","formulaVersion":"1.0.0","physicsVersion":"0.1.4","fixture":"fixtures/CV-29.json","sourceReference":"AKP-Conformance-Vectors-0.1.md §CV-29"},
-    {"cvId":"CV-30","executability":"EXECUTABLE","formulaId":"temperature-1.0.0","formulaVersion":"1.0.0","physicsVersion":"0.1.4","fixture":"fixtures/CV-30.json","sourceReference":"AKP-Conformance-Vectors-0.1.md §CV-30"},
-    {"cvId":"CV-31","executability":"EXECUTABLE","formulaId":"temperature-1.0.0","formulaVersion":"1.0.0","physicsVersion":"0.1.4","fixture":"fixtures/CV-31.json","sourceReference":"AKP-Conformance-Vectors-0.1.md §CV-31"},
-    {"cvId":"CV-32","executability":"EXECUTABLE","formulaId":"load-1.0.0","formulaVersion":"1.0.0","physicsVersion":"0.2.5","fixture":"fixtures/CV-32.json","sourceReference":"AKP-Conformance-Vectors-0.1.md §CV-32"},
-    {"cvId":"CV-33","executability":"BLOCKED","reason":"Rule stated but no concrete MemoryId/Priority list and expected eviction order in CV text","formulaId":"load-1.0.0","blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-34","executability":"EXECUTABLE","formulaId":"load-1.0.0","formulaVersion":"1.0.0","physicsVersion":"0.2.5","fixture":"fixtures/CV-34.json","sourceReference":"AKP-Conformance-Vectors-0.1.md §CV-34"},
-    {"cvId":"CV-35","executability":"EXECUTABLE","formulaId":"cognitive-saturation-1.0.0","formulaVersion":"1.0.0","physicsVersion":"0.2.5","fixture":"fixtures/CV-35.json","sourceReference":"AKP-Conformance-Vectors-0.1.md §CV-35"},
-    {"cvId":"CV-36","executability":"EXECUTABLE","formulaId":"cognitive-saturation-1.0.0","formulaVersion":"1.0.0","physicsVersion":"0.2.5","fixture":"fixtures/CV-36.json","sourceReference":"AKP-Conformance-Vectors-0.1.md §CV-36"},
-    {"cvId":"CV-37","executability":"BLOCKED","reason":"Dedup rule only; no concrete candidate list / expected output","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-38","executability":"BLOCKED","reason":"C4=C3 when lambda=0 stated; no concrete C3 snapshot fixture","formulaId":"temporal-relevance-1.0.0","blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-39","executability":"BLOCKED","reason":"Exclusion rule stated; no concrete deprecatedAt/queryTime/items fixture","formulaId":"temporal-relevance-1.0.0","blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-40","executability":"EXECUTABLE","formulaId":"temporal-relevance-1.0.0","formulaVersion":"1.0.0","physicsVersion":"0.2.5","fixture":"fixtures/CV-40.json","sourceReference":"AKP-Conformance-Vectors-0.1.md §CV-40"},
-    {"cvId":"CV-41","executability":"EXECUTABLE","formulaId":null,"formulaVersion":null,"physicsVersion":"0.1.4","fixture":"fixtures/CV-41.json","sourceReference":"AKP-Conformance-Vectors-0.1.md §CV-41; AKP-0 §0.6 / AAS-49"},
-    {"cvId":"CV-42","executability":"EXECUTABLE","formulaId":"confidence-1.0.0","formulaVersion":"1.0.0","physicsVersion":"0.1.4","fixture":"fixtures/CV-42.json","sourceReference":"AKP-Conformance-Vectors-0.1.md §CV-42"},
-    {"cvId":"CV-43","executability":"BLOCKED","reason":"Tie-break rule only; no concrete Priority/MemoryId list","formulaId":"priority-1.0.0","blockerClass":"SPECIFICATION_BLOCKER"},
-    {"cvId":"CV-44","executability":"BLOCKED","reason":"AAS-54 referenced; no dual projection payload fixture for equality","formulaId":null,"blockerClass":"SPECIFICATION_BLOCKER"}
+    {
+      "cvId": "CV-01",
+      "executability": "EXECUTABLE",
+      "formulaId": "confidence-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-01.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-01"
+    },
+    {
+      "cvId": "CV-02",
+      "executability": "EXECUTABLE",
+      "formulaId": "mass-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-02.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-02"
+    },
+    {
+      "cvId": "CV-03",
+      "executability": "EXECUTABLE",
+      "formulaId": "relation-strength-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-03.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-03"
+    },
+    {
+      "cvId": "CV-04",
+      "executability": "EXECUTABLE",
+      "formulaId": "retrieval-score-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-04.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-04"
+    },
+    {
+      "cvId": "CV-05",
+      "executability": "EXECUTABLE",
+      "formulaId": "dream-2.0.0",
+      "formulaVersion": "2.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-05.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-05"
+    },
+    {
+      "cvId": "CV-06",
+      "executability": "EXECUTABLE",
+      "formulaId": "dream-safety-gate-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-06.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-06"
+    },
+    {
+      "cvId": "CV-07",
+      "executability": "EXECUTABLE",
+      "formulaId": "dream-safety-gate-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-07.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-07"
+    },
+    {
+      "cvId": "CV-08",
+      "executability": "EXECUTABLE",
+      "formulaId": "priority-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-08.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-08"
+    },
+    {
+      "cvId": "CV-09",
+      "executability": "EXECUTABLE",
+      "formulaId": "effective-reliability-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-09.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-09"
+    },
+    {
+      "cvId": "CV-10",
+      "executability": "EXECUTABLE",
+      "formulaId": "semantic-similarity-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-10.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-10"
+    },
+    {
+      "cvId": "CV-11",
+      "executability": "EXECUTABLE",
+      "formulaId": "diversity-selection-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-11.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-11"
+    },
+    {
+      "cvId": "CV-12",
+      "executability": "EXECUTABLE",
+      "formulaId": "priority-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-12.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-12"
+    },
+    {
+      "cvId": "CV-13",
+      "executability": "EXECUTABLE",
+      "formulaId": null,
+      "formulaVersion": null,
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-13.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-13"
+    },
+    {
+      "cvId": "CV-14",
+      "executability": "EXECUTABLE",
+      "formulaId": null,
+      "formulaVersion": null,
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-14.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-14"
+    },
+    {
+      "cvId": "CV-15",
+      "executability": "EXECUTABLE",
+      "formulaId": null,
+      "formulaVersion": null,
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-15.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-15"
+    },
+    {
+      "cvId": "CV-16",
+      "executability": "EXECUTABLE",
+      "formulaId": "connectivity-potential-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-16.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-16"
+    },
+    {
+      "cvId": "CV-17",
+      "executability": "EXECUTABLE",
+      "formulaId": "resonance-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-17.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-17"
+    },
+    {
+      "cvId": "CV-18",
+      "executability": "EXECUTABLE",
+      "formulaId": "evidence-strength-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-18.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-18"
+    },
+    {
+      "cvId": "CV-19",
+      "executability": "EXECUTABLE",
+      "formulaId": "source-diversity-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-19.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-19"
+    },
+    {
+      "cvId": "CV-20",
+      "executability": "EXECUTABLE",
+      "formulaId": "contradiction-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-20.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-20"
+    },
+    {
+      "cvId": "CV-21",
+      "executability": "EXECUTABLE",
+      "formulaId": "novelty-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-21.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-21"
+    },
+    {
+      "cvId": "CV-22",
+      "executability": "EXECUTABLE",
+      "formulaId": "usage-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-22.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-22"
+    },
+    {
+      "cvId": "CV-23",
+      "executability": "EXECUTABLE",
+      "formulaId": "energy-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-23.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-23"
+    },
+    {
+      "cvId": "CV-24",
+      "executability": "EXECUTABLE",
+      "formulaId": "gravity-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-24.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-24"
+    },
+    {
+      "cvId": "CV-25",
+      "executability": "EXECUTABLE",
+      "formulaId": "degree-centrality-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-25.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-25"
+    },
+    {
+      "cvId": "CV-26",
+      "executability": "EXECUTABLE",
+      "formulaId": "emergence-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-26.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-26"
+    },
+    {
+      "cvId": "CV-27",
+      "executability": "EXECUTABLE",
+      "formulaId": "importance-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-27.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-27"
+    },
+    {
+      "cvId": "CV-28",
+      "executability": "EXECUTABLE",
+      "formulaId": "importance-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-28.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-28"
+    },
+    {
+      "cvId": "CV-29",
+      "executability": "EXECUTABLE",
+      "formulaId": "entropy-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-29.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-29"
+    },
+    {
+      "cvId": "CV-30",
+      "executability": "EXECUTABLE",
+      "formulaId": "temperature-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-30.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-30"
+    },
+    {
+      "cvId": "CV-31",
+      "executability": "EXECUTABLE",
+      "formulaId": "temperature-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-31.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-31"
+    },
+    {
+      "cvId": "CV-32",
+      "executability": "EXECUTABLE",
+      "formulaId": "load-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-32.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-32"
+    },
+    {
+      "cvId": "CV-33",
+      "executability": "EXECUTABLE",
+      "formulaId": "load-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-33.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-33"
+    },
+    {
+      "cvId": "CV-34",
+      "executability": "EXECUTABLE",
+      "formulaId": "load-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-34.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-34"
+    },
+    {
+      "cvId": "CV-35",
+      "executability": "EXECUTABLE",
+      "formulaId": "cognitive-saturation-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-35.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-35"
+    },
+    {
+      "cvId": "CV-36",
+      "executability": "EXECUTABLE",
+      "formulaId": "cognitive-saturation-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-36.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-36"
+    },
+    {
+      "cvId": "CV-37",
+      "executability": "EXECUTABLE",
+      "formulaId": null,
+      "formulaVersion": null,
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-37.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-37"
+    },
+    {
+      "cvId": "CV-38",
+      "executability": "EXECUTABLE",
+      "formulaId": "temporal-relevance-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-38.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-38"
+    },
+    {
+      "cvId": "CV-39",
+      "executability": "EXECUTABLE",
+      "formulaId": "temporal-relevance-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-39.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-39"
+    },
+    {
+      "cvId": "CV-40",
+      "executability": "EXECUTABLE",
+      "formulaId": "temporal-relevance-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-40.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-40"
+    },
+    {
+      "cvId": "CV-41",
+      "executability": "EXECUTABLE",
+      "formulaId": null,
+      "formulaVersion": null,
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-41.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-41"
+    },
+    {
+      "cvId": "CV-42",
+      "executability": "EXECUTABLE",
+      "formulaId": "confidence-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-42.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-42"
+    },
+    {
+      "cvId": "CV-43",
+      "executability": "EXECUTABLE",
+      "formulaId": "priority-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "fixture": "fixtures/CV-43.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-43"
+    },
+    {
+      "cvId": "CV-44",
+      "executability": "EXECUTABLE",
+      "formulaId": null,
+      "formulaVersion": null,
+      "physicsVersion": "0.1.4",
+      "fixture": "fixtures/CV-44.json",
+      "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-44"
+    }
   ]
 }

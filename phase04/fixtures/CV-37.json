@@ -1,0 +1,36 @@
+{
+  "cvId": "CV-37",
+  "formulaId": null,
+  "formulaVersion": null,
+  "physicsVersion": "0.2.5",
+  "parameterSetId": "PS-012",
+  "parameterSetVersion": "0.1",
+  "input": {
+    "items": [
+      {
+        "memoryId": "m1"
+      },
+      {
+        "memoryId": "m2"
+      },
+      {
+        "memoryId": "m1"
+      },
+      {
+        "memoryId": "m3"
+      }
+    ]
+  },
+  "expectedOutput": {
+    "order": [
+      "m1",
+      "m2",
+      "m3"
+    ]
+  },
+  "expectedStatus": "PASS",
+  "tolerance": 0,
+  "comparison": "exact",
+  "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-37",
+  "notes": ""
+}

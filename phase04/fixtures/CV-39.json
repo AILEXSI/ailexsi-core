@@ -1,0 +1,34 @@
+{
+  "cvId": "CV-39",
+  "formulaId": "temporal-relevance-1.0.0",
+  "formulaVersion": "1.0.0",
+  "physicsVersion": "0.2.5",
+  "parameterSetId": "PS-001",
+  "parameterSetVersion": "0.1",
+  "input": {
+    "lambda_decay": 1e-09,
+    "queryTime": "2026-01-02T00:00:00Z",
+    "items": [
+      {
+        "memoryId": "m1",
+        "validTo": null,
+        "deprecatedAt": "2026-01-01T00:00:00Z"
+      },
+      {
+        "memoryId": "m2",
+        "validTo": null,
+        "deprecatedAt": null
+      }
+    ]
+  },
+  "expectedOutput": {
+    "C4": [
+      "m2"
+    ]
+  },
+  "expectedStatus": "PASS",
+  "tolerance": 0,
+  "comparison": "exact",
+  "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-39",
+  "notes": ""
+}

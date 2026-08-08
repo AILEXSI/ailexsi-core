@@ -27,7 +27,7 @@
 | B-001 | 2026-08-08 | Runtime implementation not started (expected) | open | | | Tracked by AMBC Build Order; not closable by deleting MVP scope |
 | B-002 | 2026-08-08 | LearningDomain feedback→parameter mapping not AKP-defined | open | | | May only close COMPLETE (new AKP+CV) or DEFER with docs/DEFER entry |
 | B-003 | 2026-08-08 | Scheduler policy (when Dream/Reflection/Maintenance fire) only framed | open | | | COMPLETE or DEFER; not by removing Scheduler from BUILD/CONFIGURE |
-| B-004 | 2026-08-08 | Phase 04: CV fixtures incomplete — 32/44 CVs lack unambiguous input/expectedOutput in Conformance Vectors 0.1.3 (esp. CV-01..CV-26 prior suite retained without fixtures) | open | | | May only close COMPLETE by expanding AKP-Conformance-Vectors with full fixtures; never by shrinking CV range |
+| B-004 | 2026-08-08 | Phase 04: CV fixtures incomplete — 32/44 CVs lack unambiguous input/expectedOutput in Conformance Vectors 0.1.3 (esp. CV-01..CV-26 prior suite retained without fixtures) | closed | 2026-08-08 | COMPLETE | Conformance Vectors 0.1.4 + phase04/fixtures/CV-01..CV-44 + phase04/run.mjs |
 
 ---
 

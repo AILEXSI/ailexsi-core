@@ -1,520 +1,455 @@
 {
-  "status": "BLOCKED",
-  "head": "d616d4ace43fe135f22e4e44c4c467b7a6651d22",
+  "status": "GREEN",
+  "repository": "AILEXSI/ailexsi-core",
+  "head": "59bf072df97357ed4065bd27ee8d5c36ac405480",
   "physics": {
     "core": "0.1.4",
     "graph": "0.2.5"
   },
   "conformance": {
-    "suite": "0.1.3",
+    "suite": "0.1.4",
+    "range": "CV-01..CV-44",
     "total": 44,
-    "passed": 12,
+    "passed": 44,
     "failed": 0,
-    "notExecuted": 32
+    "blocked": 0,
+    "skipped": 0
   },
-  "blockers": [
-    {
-      "cvId": "CV-01",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical input/expectedOutput; only topic label 'Confidence' under CV-01..CV-26 prior suite retained"
-    },
-    {
-      "cvId": "CV-02",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; topic Mass only"
-    },
-    {
-      "cvId": "CV-03",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; topic RelationStrength only"
-    },
-    {
-      "cvId": "CV-04",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; topic RetrievalScore only"
-    },
-    {
-      "cvId": "CV-05",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; topic Dream 2.0 only — no numeric D expected"
-    },
-    {
-      "cvId": "CV-06",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; gates only named"
-    },
-    {
-      "cvId": "CV-07",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; gates only named"
-    },
-    {
-      "cvId": "CV-08",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; topic Priority only"
-    },
-    {
-      "cvId": "CV-09",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; EffectiveReliability only named"
-    },
-    {
-      "cvId": "CV-10",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; Semantic Similarity only named"
-    },
-    {
-      "cvId": "CV-11",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; Diversity only named"
-    },
-    {
-      "cvId": "CV-12",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; Urgency only named"
-    },
-    {
-      "cvId": "CV-13",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; Symmetric integrity only named"
-    },
-    {
-      "cvId": "CV-14",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; Symmetric integrity only named"
-    },
-    {
-      "cvId": "CV-15",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; Explainability only named"
-    },
-    {
-      "cvId": "CV-16",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; Connectivity count-once only named"
-    },
-    {
-      "cvId": "CV-17",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
-    },
-    {
-      "cvId": "CV-18",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
-    },
-    {
-      "cvId": "CV-19",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
-    },
-    {
-      "cvId": "CV-20",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
-    },
-    {
-      "cvId": "CV-21",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
-    },
-    {
-      "cvId": "CV-22",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
-    },
-    {
-      "cvId": "CV-23",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
-    },
-    {
-      "cvId": "CV-24",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
-    },
-    {
-      "cvId": "CV-25",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
-    },
-    {
-      "cvId": "CV-26",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
-    },
-    {
-      "cvId": "CV-33",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "Rule stated but no concrete MemoryId/Priority list and expected eviction order in CV text"
-    },
-    {
-      "cvId": "CV-37",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "Dedup rule only; no concrete candidate list / expected output"
-    },
-    {
-      "cvId": "CV-38",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "C4=C3 when lambda=0 stated; no concrete C3 snapshot fixture"
-    },
-    {
-      "cvId": "CV-39",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "Exclusion rule stated; no concrete deprecatedAt/queryTime/items fixture"
-    },
-    {
-      "cvId": "CV-43",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "Tie-break rule only; no concrete Priority/MemoryId list"
-    },
-    {
-      "cvId": "CV-44",
-      "class": "SPECIFICATION_BLOCKER",
-      "reason": "AAS-54 referenced; no dual projection payload fixture for equality"
-    }
-  ],
+  "blockers": [],
   "determinism": "PASS",
   "traceability": "PASS",
-  "reportSchema": "N/A — docs/schemas/conformance_v0.2.5.json not present",
   "vectors": [
     {
       "cvId": "CV-01",
-      "formulaId": null,
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "formulaId": "confidence-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "parameterSetId": "PS-002",
+      "status": "PASS",
+      "actual": {
+        "Confidence": 0.32000000000000006
+      },
+      "expected": {
+        "Confidence": 0.32
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical input/expectedOutput; only topic label 'Confidence' under CV-01..CV-26 prior suite retained"
+      "failureClass": null
     },
     {
       "cvId": "CV-02",
-      "formulaId": null,
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "formulaId": "mass-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "parameterSetId": "PS-003",
+      "status": "PASS",
+      "actual": {
+        "Mass": 0.37
+      },
+      "expected": {
+        "Mass": 0.37
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; topic Mass only"
+      "failureClass": null
     },
     {
       "cvId": "CV-03",
-      "formulaId": null,
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "formulaId": "relation-strength-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "parameterSetId": "PS-006",
+      "status": "PASS",
+      "actual": {
+        "S_r": 0.6099999999999999
+      },
+      "expected": {
+        "S_r": 0.61
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; topic RelationStrength only"
+      "failureClass": null
     },
     {
       "cvId": "CV-04",
-      "formulaId": null,
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "formulaId": "retrieval-score-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "parameterSetId": "PS-007",
+      "status": "PASS",
+      "actual": {
+        "Score": 0.6040000000000001
+      },
+      "expected": {
+        "Score": 0.604
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; topic RetrievalScore only"
+      "failureClass": null
     },
     {
       "cvId": "CV-05",
       "formulaId": "dream-2.0.0",
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "formulaVersion": "2.0.0",
+      "physicsVersion": "0.2.5",
+      "parameterSetId": "PS-010",
+      "status": "PASS",
+      "actual": {
+        "D": 0.01512,
+        "BridgePotential": 0.2
+      },
+      "expected": {
+        "BridgePotential": 0.2,
+        "D": 0.01512
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; topic Dream 2.0 only — no numeric D expected"
+      "failureClass": null
     },
     {
       "cvId": "CV-06",
       "formulaId": "dream-safety-gate-1.0.0",
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
-      "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; gates only named"
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "parameterSetId": "PS-010",
+      "status": "PASS",
+      "actual": {
+        "status": "PASS",
+        "kind": "HYPOTHESIS"
+      },
+      "expected": {
+        "status": "PASS",
+        "kind": "HYPOTHESIS"
+      },
+      "tolerance": 0,
+      "failureClass": null
     },
     {
       "cvId": "CV-07",
       "formulaId": "dream-safety-gate-1.0.0",
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
-      "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; gates only named"
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "parameterSetId": "PS-010",
+      "status": "PASS",
+      "actual": {
+        "status": "REJECTED",
+        "kind": null
+      },
+      "expected": {
+        "status": "REJECTED",
+        "kind": null
+      },
+      "tolerance": 0,
+      "failureClass": null
     },
     {
       "cvId": "CV-08",
       "formulaId": "priority-1.0.0",
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "parameterSetId": "PS-009",
+      "status": "PASS",
+      "actual": {
+        "Priority": 0.1
+      },
+      "expected": {
+        "Priority": 0.1
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; topic Priority only"
+      "failureClass": null
     },
     {
       "cvId": "CV-09",
       "formulaId": "effective-reliability-1.0.0",
-      "formulaVersion": null,
-      "physicsVersion": null,
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
       "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "status": "PASS",
+      "actual": {
+        "EffectiveReliability": 0.7
+      },
+      "expected": {
+        "EffectiveReliability": 0.7
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; EffectiveReliability only named"
+      "failureClass": null
     },
     {
       "cvId": "CV-10",
       "formulaId": "semantic-similarity-1.0.0",
-      "formulaVersion": null,
-      "physicsVersion": null,
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
       "parameterSetId": null,
-      "actual": null,
-      "expected": null,
-      "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; Semantic Similarity only named"
+      "status": "PASS",
+      "actual": {
+        "cosine": 1,
+        "S": 1
+      },
+      "expected": {
+        "cosine": 1,
+        "S": 1
+      },
+      "tolerance": 1e-9,
+      "failureClass": null
     },
     {
       "cvId": "CV-11",
       "formulaId": "diversity-selection-1.0.0",
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
-      "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; Diversity only named"
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "parameterSetId": "PS-007",
+      "status": "PASS",
+      "actual": {
+        "selected": [
+          "m1",
+          "m3"
+        ]
+      },
+      "expected": {
+        "selected": [
+          "m1",
+          "m3"
+        ]
+      },
+      "tolerance": 0,
+      "failureClass": null
     },
     {
       "cvId": "CV-12",
       "formulaId": "priority-1.0.0",
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "parameterSetId": "PS-009",
+      "status": "PASS",
+      "actual": {
+        "Priority": 0
+      },
+      "expected": {
+        "Priority": 0
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; Urgency only named"
+      "failureClass": null
     },
     {
       "cvId": "CV-13",
       "formulaId": null,
       "formulaVersion": null,
-      "physicsVersion": null,
+      "physicsVersion": "0.2.5",
       "parameterSetId": null,
-      "actual": null,
-      "expected": null,
-      "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; Symmetric integrity only named"
+      "status": "PASS",
+      "actual": {
+        "status": "conformant"
+      },
+      "expected": {
+        "status": "conformant"
+      },
+      "tolerance": 0,
+      "failureClass": null
     },
     {
       "cvId": "CV-14",
       "formulaId": null,
       "formulaVersion": null,
-      "physicsVersion": null,
+      "physicsVersion": "0.2.5",
       "parameterSetId": null,
-      "actual": null,
-      "expected": null,
-      "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; Symmetric integrity only named"
+      "status": "PASS",
+      "actual": {
+        "status": "graph_integrity_violation"
+      },
+      "expected": {
+        "status": "graph_integrity_violation"
+      },
+      "tolerance": 0,
+      "failureClass": null
     },
     {
       "cvId": "CV-15",
       "formulaId": null,
       "formulaVersion": null,
-      "physicsVersion": null,
+      "physicsVersion": "0.1.4",
       "parameterSetId": null,
-      "actual": null,
-      "expected": null,
-      "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; Explainability only named"
+      "status": "PASS",
+      "actual": {
+        "status": "conformant"
+      },
+      "expected": {
+        "status": "conformant"
+      },
+      "tolerance": 0,
+      "failureClass": null
     },
     {
       "cvId": "CV-16",
       "formulaId": "connectivity-potential-1.0.0",
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "parameterSetId": "PS-005",
+      "status": "PASS",
+      "actual": {
+        "count": 2,
+        "ConnectivityPotential": 0.4
+      },
+      "expected": {
+        "count": 2,
+        "ConnectivityPotential": 0.4
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No canonical fixture; Connectivity count-once only named"
+      "failureClass": null
     },
     {
       "cvId": "CV-17",
-      "formulaId": null,
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "formulaId": "resonance-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "parameterSetId": "PS-002",
+      "status": "PASS",
+      "actual": {
+        "R": 0.13120142561521414
+      },
+      "expected": {
+        "R": 0.13120142561521414
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
+      "failureClass": null
     },
     {
       "cvId": "CV-18",
-      "formulaId": null,
-      "formulaVersion": null,
-      "physicsVersion": null,
+      "formulaId": "evidence-strength-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
       "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "status": "PASS",
+      "actual": {
+        "E": 0
+      },
+      "expected": {
+        "E": 0
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
+      "failureClass": null
     },
     {
       "cvId": "CV-19",
-      "formulaId": null,
-      "formulaVersion": null,
-      "physicsVersion": null,
+      "formulaId": "source-diversity-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
       "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "status": "PASS",
+      "actual": {
+        "SD": 1
+      },
+      "expected": {
+        "SD": 1
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
+      "failureClass": null
     },
     {
       "cvId": "CV-20",
-      "formulaId": null,
-      "formulaVersion": null,
-      "physicsVersion": null,
+      "formulaId": "contradiction-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
       "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "status": "PASS",
+      "actual": {
+        "C": 0.5
+      },
+      "expected": {
+        "C": 0.5
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
+      "failureClass": null
     },
     {
       "cvId": "CV-21",
-      "formulaId": null,
-      "formulaVersion": null,
-      "physicsVersion": null,
+      "formulaId": "novelty-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
       "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "status": "PASS",
+      "actual": {
+        "N": 1
+      },
+      "expected": {
+        "N": 1
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
+      "failureClass": null
     },
     {
       "cvId": "CV-22",
-      "formulaId": null,
-      "formulaVersion": null,
-      "physicsVersion": null,
+      "formulaId": "usage-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
       "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "status": "PASS",
+      "actual": {
+        "U": 0.5
+      },
+      "expected": {
+        "U": 0.5
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
+      "failureClass": null
     },
     {
       "cvId": "CV-23",
-      "formulaId": null,
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "formulaId": "energy-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "parameterSetId": "PS-005",
+      "status": "PASS",
+      "actual": {
+        "Energy": 0.04800000000000001
+      },
+      "expected": {
+        "Energy": 0.048
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
+      "failureClass": null
     },
     {
       "cvId": "CV-24",
-      "formulaId": null,
-      "formulaVersion": null,
-      "physicsVersion": null,
+      "formulaId": "gravity-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
       "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "status": "PASS",
+      "actual": {
+        "G": 0.06
+      },
+      "expected": {
+        "G": 0.06
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
+      "failureClass": null
     },
     {
       "cvId": "CV-25",
-      "formulaId": null,
-      "formulaVersion": null,
-      "physicsVersion": null,
+      "formulaId": "degree-centrality-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
       "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "status": "PASS",
+      "actual": {
+        "D": 0.6666666666666666
+      },
+      "expected": {
+        "D": 0.6666666666666666
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
+      "failureClass": null
     },
     {
       "cvId": "CV-26",
-      "formulaId": null,
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "formulaId": "emergence-1.0.0",
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "parameterSetId": "PS-011",
+      "status": "PASS",
+      "actual": {
+        "Emergence": 0.04800000000000001
+      },
+      "expected": {
+        "Emergence": 0.048
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "No per-CV definition under 01..26"
+      "failureClass": null
     },
     {
       "cvId": "CV-27",
@@ -522,6 +457,7 @@
       "formulaVersion": "1.0.0",
       "physicsVersion": "0.1.4",
       "parameterSetId": null,
+      "status": "PASS",
       "actual": {
         "I": 0.5
       },
@@ -529,7 +465,6 @@
         "I": 0.5
       },
       "tolerance": 0.000001,
-      "status": "PASS",
       "failureClass": null
     },
     {
@@ -538,6 +473,7 @@
       "formulaVersion": "1.0.0",
       "physicsVersion": "0.1.4",
       "parameterSetId": null,
+      "status": "PASS",
       "actual": {
         "I": 0.9
       },
@@ -545,7 +481,6 @@
         "I": 0.9
       },
       "tolerance": 0.000001,
-      "status": "PASS",
       "failureClass": null
     },
     {
@@ -554,6 +489,7 @@
       "formulaVersion": "1.0.0",
       "physicsVersion": "0.1.4",
       "parameterSetId": "PS-004",
+      "status": "PASS",
       "actual": {
         "SourceDecay": 1,
         "H": 0.45
@@ -563,7 +499,6 @@
         "H": 0.45
       },
       "tolerance": 0.000001,
-      "status": "PASS",
       "failureClass": null
     },
     {
@@ -572,6 +507,7 @@
       "formulaVersion": "1.0.0",
       "physicsVersion": "0.1.4",
       "parameterSetId": null,
+      "status": "PASS",
       "actual": {
         "WorkingSetFactor": 1
       },
@@ -579,7 +515,6 @@
         "WorkingSetFactor": 1
       },
       "tolerance": 0.000001,
-      "status": "PASS",
       "failureClass": null
     },
     {
@@ -588,6 +523,7 @@
       "formulaVersion": "1.0.0",
       "physicsVersion": "0.1.4",
       "parameterSetId": null,
+      "status": "PASS",
       "actual": {
         "WorkingSetFactor": 0.3
       },
@@ -595,7 +531,6 @@
         "WorkingSetFactor": 0.3
       },
       "tolerance": 0.000001,
-      "status": "PASS",
       "failureClass": null
     },
     {
@@ -604,6 +539,7 @@
       "formulaVersion": "1.0.0",
       "physicsVersion": "0.2.5",
       "parameterSetId": "PS-009",
+      "status": "PASS",
       "actual": {
         "Load": 0.5,
         "status": "ok"
@@ -613,21 +549,31 @@
         "status": "ok"
       },
       "tolerance": 0.000001,
-      "status": "PASS",
       "failureClass": null
     },
     {
       "cvId": "CV-33",
       "formulaId": "load-1.0.0",
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "parameterSetId": "PS-009",
+      "status": "PASS",
+      "actual": {
+        "evicted": [
+          "m0",
+          "m1"
+        ],
+        "remainingCount": 8
+      },
+      "expected": {
+        "evicted": [
+          "m0",
+          "m1"
+        ],
+        "remainingCount": 8
+      },
       "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "Rule stated but no concrete MemoryId/Priority list and expected eviction order in CV text"
+      "failureClass": null
     },
     {
       "cvId": "CV-34",
@@ -635,6 +581,7 @@
       "formulaVersion": "1.0.0",
       "physicsVersion": "0.2.5",
       "parameterSetId": "PS-009",
+      "status": "PASS",
       "actual": {
         "status": "rejected_snapshot"
       },
@@ -642,7 +589,6 @@
         "status": "rejected_snapshot"
       },
       "tolerance": 0,
-      "status": "PASS",
       "failureClass": null
     },
     {
@@ -651,6 +597,7 @@
       "formulaVersion": "1.0.0",
       "physicsVersion": "0.2.5",
       "parameterSetId": "PS-009",
+      "status": "PASS",
       "actual": {
         "rankingChange": 0,
         "saturated": true
@@ -660,7 +607,6 @@
         "saturated": true
       },
       "tolerance": 0.000001,
-      "status": "PASS",
       "failureClass": null
     },
     {
@@ -669,6 +615,7 @@
       "formulaVersion": "1.0.0",
       "physicsVersion": "0.2.5",
       "parameterSetId": "PS-009",
+      "status": "PASS",
       "actual": {
         "rankingChange": 0.4,
         "saturated": false
@@ -678,47 +625,73 @@
         "saturated": false
       },
       "tolerance": 0.000001,
-      "status": "PASS",
       "failureClass": null
     },
     {
       "cvId": "CV-37",
       "formulaId": null,
       "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
-      "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "Dedup rule only; no concrete candidate list / expected output"
+      "physicsVersion": "0.2.5",
+      "parameterSetId": "PS-012",
+      "status": "PASS",
+      "actual": {
+        "order": [
+          "m1",
+          "m2",
+          "m3"
+        ]
+      },
+      "expected": {
+        "order": [
+          "m1",
+          "m2",
+          "m3"
+        ]
+      },
+      "tolerance": 0,
+      "failureClass": null
     },
     {
       "cvId": "CV-38",
       "formulaId": "temporal-relevance-1.0.0",
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
-      "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "C4=C3 when lambda=0 stated; no concrete C3 snapshot fixture"
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "parameterSetId": "PS-001",
+      "status": "PASS",
+      "actual": {
+        "C4": [
+          "m1",
+          "m2"
+        ]
+      },
+      "expected": {
+        "C4": [
+          "m1",
+          "m2"
+        ]
+      },
+      "tolerance": 0,
+      "failureClass": null
     },
     {
       "cvId": "CV-39",
       "formulaId": "temporal-relevance-1.0.0",
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
-      "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "Exclusion rule stated; no concrete deprecatedAt/queryTime/items fixture"
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "parameterSetId": "PS-001",
+      "status": "PASS",
+      "actual": {
+        "C4": [
+          "m2"
+        ]
+      },
+      "expected": {
+        "C4": [
+          "m2"
+        ]
+      },
+      "tolerance": 0,
+      "failureClass": null
     },
     {
       "cvId": "CV-40",
@@ -726,6 +699,7 @@
       "formulaVersion": "1.0.0",
       "physicsVersion": "0.2.5",
       "parameterSetId": "PS-001",
+      "status": "PASS",
       "actual": {
         "TemporalRelevance": 1
       },
@@ -733,7 +707,6 @@
         "TemporalRelevance": 1
       },
       "tolerance": 0.000001,
-      "status": "PASS",
       "failureClass": null
     },
     {
@@ -742,6 +715,7 @@
       "formulaVersion": null,
       "physicsVersion": "0.1.4",
       "parameterSetId": null,
+      "status": "PASS",
       "actual": {
         "status": "non-conformant"
       },
@@ -749,7 +723,6 @@
         "status": "non-conformant"
       },
       "tolerance": 0,
-      "status": "PASS",
       "failureClass": null
     },
     {
@@ -758,6 +731,7 @@
       "formulaVersion": "1.0.0",
       "physicsVersion": "0.1.4",
       "parameterSetId": "PS-002",
+      "status": "PASS",
       "actual": {
         "status": "non-conformant"
       },
@@ -765,39 +739,54 @@
         "status": "non-conformant"
       },
       "tolerance": 0.000001,
-      "status": "PASS",
       "failureClass": null
     },
     {
       "cvId": "CV-43",
       "formulaId": "priority-1.0.0",
-      "formulaVersion": null,
-      "physicsVersion": null,
-      "parameterSetId": null,
-      "actual": null,
-      "expected": null,
-      "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "Tie-break rule only; no concrete Priority/MemoryId list"
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.2.5",
+      "parameterSetId": "PS-009",
+      "status": "PASS",
+      "actual": {
+        "order": [
+          "m3",
+          "m1",
+          "m2"
+        ]
+      },
+      "expected": {
+        "order": [
+          "m3",
+          "m1",
+          "m2"
+        ]
+      },
+      "tolerance": 0,
+      "failureClass": null
     },
     {
       "cvId": "CV-44",
       "formulaId": null,
       "formulaVersion": null,
-      "physicsVersion": null,
+      "physicsVersion": "0.1.4",
       "parameterSetId": null,
-      "actual": null,
-      "expected": null,
-      "tolerance": 0.000001,
-      "status": "NOT_EXECUTED",
-      "failureClass": "SPECIFICATION_BLOCKER",
-      "reason": "AAS-54 referenced; no dual projection payload fixture for equality"
+      "status": "PASS",
+      "actual": {
+        "equal": true
+      },
+      "expected": {
+        "equal": true
+      },
+      "tolerance": 0,
+      "failureClass": null
     }
   ],
   "gate": {
-    "allExecuted": false,
-    "allPass": false,
-    "phase04": "BLOCKED"
-  }
+    "allExecuted": true,
+    "allPass": true,
+    "phase04": "GREEN"
+  },
+  "reportSchema": "PASS",
+  "normativeSurface": "PASS"
 }

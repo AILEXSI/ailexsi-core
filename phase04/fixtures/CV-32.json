@@ -16,5 +16,6 @@
   "expectedStatus": "PASS",
   "tolerance": 1e-06,
   "comparison": "mixed",
-  "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-32"
+  "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-32",
+  "notes": ""
 }

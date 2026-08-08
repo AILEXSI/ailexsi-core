@@ -1,0 +1,36 @@
+{
+  "cvId": "CV-44",
+  "formulaId": null,
+  "formulaVersion": null,
+  "physicsVersion": "0.1.4",
+  "parameterSetId": null,
+  "parameterSetVersion": null,
+  "input": {
+    "stateA": {
+      "memories": [
+        {
+          "id": "m1",
+          "v": 1
+        }
+      ],
+      "relations": []
+    },
+    "stateB": {
+      "memories": [
+        {
+          "id": "m1",
+          "v": 1
+        }
+      ],
+      "relations": []
+    }
+  },
+  "expectedOutput": {
+    "equal": true
+  },
+  "expectedStatus": "PASS",
+  "tolerance": 0,
+  "comparison": "exact",
+  "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-44",
+  "notes": ""
+}

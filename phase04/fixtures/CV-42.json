@@ -31,5 +31,6 @@
   "expectedStatus": "REJECTED",
   "tolerance": 1e-06,
   "comparison": "exact",
-  "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-42"
+  "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-42",
+  "notes": ""
 }

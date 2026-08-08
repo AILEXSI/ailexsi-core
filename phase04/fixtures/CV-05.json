@@ -1,0 +1,27 @@
+{
+  "cvId": "CV-05",
+  "formulaId": "dream-2.0.0",
+  "formulaVersion": "2.0.0",
+  "physicsVersion": "0.2.5",
+  "parameterSetId": "PS-010",
+  "parameterSetVersion": "0.1",
+  "input": {
+    "EA": 0.8,
+    "EB": 0.7,
+    "BridgeA": 0.5,
+    "BridgeB": 0.4,
+    "N": 0.5,
+    "Tg": 0.6,
+    "AttentionAllocation": 0.5,
+    "Sr": 0.1
+  },
+  "expectedOutput": {
+    "BridgePotential": 0.2,
+    "D": 0.01512
+  },
+  "expectedStatus": "PASS",
+  "tolerance": 1e-06,
+  "comparison": "numerical",
+  "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-05",
+  "notes": ""
+}

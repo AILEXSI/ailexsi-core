@@ -1,0 +1,32 @@
+{
+  "cvId": "CV-13",
+  "formulaId": null,
+  "formulaVersion": null,
+  "physicsVersion": "0.2.5",
+  "parameterSetId": null,
+  "parameterSetVersion": null,
+  "input": {
+    "edges": [
+      {
+        "from": "A",
+        "to": "B",
+        "type": "similar_to",
+        "strength": 0.7
+      },
+      {
+        "from": "B",
+        "to": "A",
+        "type": "similar_to",
+        "strength": 0.7
+      }
+    ]
+  },
+  "expectedOutput": {
+    "status": "conformant"
+  },
+  "expectedStatus": "PASS",
+  "tolerance": 0,
+  "comparison": "exact",
+  "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-13",
+  "notes": ""
+}

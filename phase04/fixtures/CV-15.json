@@ -1,5 +1,5 @@
 {
-  "cvId": "CV-41",
+  "cvId": "CV-15",
   "formulaId": null,
   "formulaVersion": null,
   "physicsVersion": "0.1.4",
@@ -7,21 +7,27 @@
   "parameterSetVersion": null,
   "input": {
     "physicsCalculation": {
+      "formulaId": "confidence-1.0.0",
       "formulaVersion": "1.0.0",
-      "physicsVersion": "0.1.4",
       "parameterSetId": "PS-002",
       "parameterSetVersion": "0.1",
       "parameterSet": {},
-      "inputSnapshot": {},
-      "output": {}
+      "inputSnapshot": {
+        "E": 0.8,
+        "SD": 0.5,
+        "C": 0.2
+      },
+      "output": {
+        "Confidence": 0.32
+      }
     }
   },
   "expectedOutput": {
-    "status": "non-conformant"
+    "status": "conformant"
   },
-  "expectedStatus": "REJECTED",
+  "expectedStatus": "PASS",
   "tolerance": 0,
   "comparison": "exact",
-  "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-41",
+  "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-15",
   "notes": ""
 }
