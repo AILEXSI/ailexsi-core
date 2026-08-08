@@ -5,51 +5,46 @@
 
 ## Normative Priority
 
-Higher-priority documents override lower-priority documents in case of conflict.
-
 ```text
-1. ACS            – Constitution, Cognitive Laws, Principle Zero
-2. AKP            – Kernel Physics (computational models)
-3. AAS            – Architecture Specification (domains, runtime, models)
-4. NORMATIVE PATCHES – Historical change records (folded into canonical docs)
-5. ABS            – Build Specification (implementation contract)
-6. AUDIT          – Open Source Reality Check
-7. AMBC           – Master Build Contract (execution rules for coding agents)
-8. BUILD MANIFEST – Executable checklist
+1. ACS
+2. AKP
+3. AAS
+4. NORMATIVE PATCHES (historical only)
+5. ABS
+6. AUDIT
+7. AMBC
+8. BUILD MANIFEST
 ```
 
-**Rule:** Canonical documents are the single source of truth.  
-Patches are historical records. All normative content must live inside the canonical files.
+Higher overrides lower. Canonical documents are the single source of truth.
 
 ## Absolute Rules for Coding Agents
 
-- The normative documents are **specifications, not suggestions**.
-- Do **not** invent missing cognitive laws, physics formulas, domain contracts, or architecture.
-- Undefined normative behavior is a **BLOCKER**.
-- Physics formulas that are not fully defined in AKP must **not** be invented.
-- Architecture discrepancies must be reported as blockers before implementation.
-- Do not modify the architecture during repository analysis.
-- No references to conversation history or external drafts are permitted.
-- Canonical field names are **camelCase** as defined in AAS-Buch2 (ACS prose may use snake_case for readability only).
+- Specifications, not suggestions.
+- Do not invent missing formulas, contracts, or architecture.
+- Undefined normative behavior is a BLOCKER.
+- Canonical field names: camelCase (AAS-Buch2).
+- Physics never infers Urgency, never derives clusters, never calls providers.
+- same idempotencyKey + identical payload → original result, no new event.
+- same idempotencyKey + different payload → integrity violation.
 
 ## Document Index
 
-| Document | Path | Content |
-|----------|------|---------|
-| ACS 0.1.1 | `ACS/ACS-0.1.md` | Foundations, Cognitive Laws, Principle Zero |
-| AKP 0.1.3 | `AKP/AKP-0.1.md` | Core Physics – fully self-contained formulas |
-| AKP 0.2.3 | `AKP/AKP-0.2.md` | Graph, Retrieval, Attention, Dream – fully self-contained |
-| AKP Parameter Sets 0.1 | `AKP/AKP-Parameter-Sets-0.1.md` | Frozen MVP numeric defaults (physics 0.1.3 / 0.2.3) |
-| AKP Conformance Vectors 0.1.1 | `AKP/AKP-Conformance-Vectors-0.1.md` | Test vectors for Physics Conformance |
-| AAS 0.1.2 | `AAS/AAS-0.1.md` | Bounded Contexts, DomainEvent, Communication |
-| AAS Buch 2 v0.3.2 | `AAS/AAS-Buch2.md` | Full Canonical Domain Models & Event Contracts |
-| AAS Buch 3 v0.1.1 | `AAS/AAS-Buch3.md` | Runtime Architecture (Modular Monolith) |
-| AAS Buch 4 v0.1.1 | `AAS/AAS-Buch4.md` | MVP Runtime |
-| ABS 0.1.1 | `ABS/ABS-0.1.md` | Executable Build Contract |
-| AUDIT 0.1 | `AUDIT/Open-Source-Audit-0.1.md` | Reality Check |
-| AMBC 0.1.1 | `AMBC/AMBC-0.1.md` | Master Build Contract |
-| Build Manifest 0.1 | `BUILD/Build-Manifest-0.1.md` | Phase-by-phase checklist |
-| Normative Patch 0.1 | `PATCHES/Normative-Patch-0.1.md` | Historical change record |
+| Document | Path | Version |
+|----------|------|--------|
+| ACS | `ACS/ACS-0.1.md` | 0.1.1 |
+| AKP Core | `AKP/AKP-0.1.md` | 0.1.3 |
+| AKP Graph/Retrieval | `AKP/AKP-0.2.md` | 0.2.4 |
+| AKP Parameter Sets | `AKP/AKP-Parameter-Sets-0.1.md` | physics 0.1.3 / 0.2.4 |
+| AKP Conformance Vectors | `AKP/AKP-Conformance-Vectors-0.1.md` | 0.1.2 |
+| AAS Domains | `AAS/AAS-0.1.md` | 0.1.2 |
+| AAS Models | `AAS/AAS-Buch2.md` | 0.3.3 |
+| AAS Runtime | `AAS/AAS-Buch3.md` | 0.2.0 |
+| AAS MVP | `AAS/AAS-Buch4.md` | 0.1.2 |
+| ABS | `ABS/ABS-0.1.md` | 0.2.0 |
+| AUDIT | `AUDIT/Open-Source-Audit-0.1.md` | 0.1 |
+| AMBC | `AMBC/AMBC-0.1.md` | 0.1.1 |
+| Build Manifest | `BUILD/Build-Manifest-0.1.md` | 0.2 |
 
 ## Agent Start Protocol
 
@@ -60,5 +55,5 @@ STEP 2  Normative Cross-Check
 STEP 3  Blocker Report
 
 No implementation until STEP 3 is complete and blockers are resolved.
-Physics Conformance Suite must be green before any further implementation.
+Physics Conformance Suite (AMBC Phase 04) must be green before any further implementation.
 ```
