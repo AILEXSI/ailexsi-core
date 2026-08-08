@@ -1,3 +1,4 @@
 packages:
   - "packages/contracts"
+  - "packages/core/*"
   - "packages/infrastructure/*"
