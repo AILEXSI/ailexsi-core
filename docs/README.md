@@ -38,7 +38,7 @@ Higher overrides lower. Canonical documents are the single source of truth.
 | AKP Parameter Sets | `AKP/AKP-Parameter-Sets-0.1.md` | physics 0.1.3 / 0.2.4 |
 | AKP Conformance Vectors | `AKP/AKP-Conformance-Vectors-0.1.md` | 0.1.2 |
 | AAS Domains | `AAS/AAS-0.1.md` | 0.1.2 |
-| AAS Models | `AAS/AAS-Buch2.md` | 0.3.3 |
+| AAS Models | `AAS/AAS-Buch2.md` | 0.3.4 |
 | AAS Runtime | `AAS/AAS-Buch3.md` | 0.2.0 |
 | AAS MVP | `AAS/AAS-Buch4.md` | 0.1.2 |
 | ABS | `ABS/ABS-0.1.md` | 0.2.0 |

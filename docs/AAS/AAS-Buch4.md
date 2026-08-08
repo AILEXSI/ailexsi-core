@@ -2,9 +2,9 @@
 
 ## Buch 4 – MVP Runtime
 
-**Version:** 0.1.1  
+**Version:** 0.1.2  
 **Status:** Normative  
-**Dependencies:** ACS 0.1.1, AKP 0.1.3, AKP 0.2.3, AAS 0.1.2, AAS-Buch2 0.3.2, AAS-Buch3 0.1.1
+**Dependencies:** ACS 0.1.1, AKP 0.1.3, AKP 0.2.4, AAS 0.1.2, AAS-Buch2 0.3.4, AAS-Buch3 0.2.0
 
 ---
 
