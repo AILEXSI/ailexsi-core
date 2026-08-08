@@ -25,8 +25,8 @@
 |----|--------|-------------|--------|--------|------------|----------|
 | B-000 | 2026-08-08 | Establish Anti-Deletion governance (Patch 0.3) | closed | 2026-08-08 | COMPLETE | Normative-Patch-0.3-Anti-Deletion.md; Blocker-Ledger; Surface-Baseline; scripts/normative-surface-check.mjs; AMBC 0.1.2 |
 | B-001 | 2026-08-08 | Runtime implementation not started (expected) | open | | | Tracked by AMBC Build Order; not closable by deleting MVP scope |
-| B-002 | 2026-08-08 | LearningDomain feedback→parameter mapping not AKP-defined | open | | | May only close COMPLETE (new AKP+CV) or DEFER with docs/DEFER entry |
-| B-003 | 2026-08-08 | Scheduler policy (when Dream/Reflection/Maintenance fire) only framed | open | | | COMPLETE or DEFER; not by removing Scheduler from BUILD/CONFIGURE |
+| B-002 | 2026-08-08 | LearningDomain feedback→parameter mapping not AKP-defined | closed | 2026-08-08 | COMPLETE | docs/AKP/AKP-Learning-0.1.md; formulaId learning-feedback-map-1.0.0; PS-014; Formula Registry |
+| B-003 | 2026-08-08 | Scheduler policy (when Dream/Reflection/Maintenance fire) only framed | closed | 2026-08-08 | COMPLETE | docs/AAS/AAS-Scheduler-Policy-0.1.md; PS-013; SCH-01..SCH-07 |
 | B-004 | 2026-08-08 | Phase 04: CV fixtures incomplete — 32/44 CVs lack unambiguous input/expectedOutput in Conformance Vectors 0.1.3 (esp. CV-01..CV-26 prior suite retained without fixtures) | closed | 2026-08-08 | COMPLETE | Conformance Vectors 0.1.4 + phase04/fixtures/CV-01..CV-44 + phase04/run.mjs |
 
 ---
@@ -68,3 +68,5 @@ Allowed only if:
 3. No Phase gate / CV range shrink vs baseline without DEFER.
 
 Claims of BLOCKERS = 0 that fail any of the above are **invalid**.
+
+**Milestone note:** For Spec + Phase 04 gate, B-001 (runtime not started) may remain open. It does not reopen B-002/B-003.
