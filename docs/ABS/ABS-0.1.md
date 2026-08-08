@@ -16,18 +16,9 @@ AMBC and Build Manifest operationalize this contract; they do not replace it.
 ## 1. Stack (binding for MVP)
 
 ```text
-Language:     TypeScript (strict)
-Runtime:      Node.js
-Package mgr:  pnpm
-API:          Fastify
-Frontend:     Next.js
-DB:           PostgreSQL + pgvector
-ORM:          Drizzle
-Validation:   Zod
-Queue:        pg-boss
-Test:         Vitest
-Log:          Pino
-Container:    Docker
+Language: TypeScript (strict) · Runtime: Node.js · Package mgr: pnpm
+API: Fastify · Frontend: Next.js · DB: PostgreSQL + pgvector · ORM: Drizzle
+Validation: Zod · Queue: pg-boss · Test: Vitest · Log: Pino · Container: Docker
 ```
 
 ---
@@ -36,11 +27,9 @@ Container:    Docker
 
 ```text
 ailexsi/
-  apps/api
-  apps/web
+  apps/api, apps/web
   packages/core/{memory,identity,knowledge,trust,retrieval,reflection,learning}
-  packages/physics
-  packages/contracts
+  packages/physics, packages/contracts
   packages/infrastructure/{eventstore,projections,persistence,providers,scheduler}
   docs/
 ```
@@ -49,18 +38,9 @@ Physics package MUST have zero imports from infrastructure, apps, or providers.
 
 ---
 
-## 3. Classification (Principle Zero)
+## 3. Classification: BUILD | CONFIGURE | IMPORT | DEFER (AMBC).
 
-Every component: BUILD | CONFIGURE | IMPORT | DEFER as defined in AMBC.
-
----
-
-## 4. Implementation order
-
-Follow AMBC Build Order exactly. Physics Conformance Suite is Phase 04 HARD GATE.  
-Build Manifest phase numbers MUST match AMBC.
-
----
+## 4. Implementation order: AMBC Build Order. Physics Conformance = Phase 04 HARD GATE.
 
 ## 5. Mandatory tests before domain code beyond contracts
 
@@ -68,15 +48,9 @@ Build Manifest phase numbers MUST match AMBC.
 2. Architecture import boundaries
 3. Dream ≠ Fact
 4. Event append-only + idempotencyKey semantics
-5. Replay equality (AAS-53)
+5. Replay equality (AAS-54)
 
----
-
-## 6. Non-goals (MVP)
-
-Microservices, Kafka, Neo4j, dedicated vector DB, autonomous external actions, mobile, multimodal, federated learning, self-modification, marketplace, own LLM.
-
----
+## 6. Non-goals (MVP): Microservices, Kafka, Neo4j, dedicated vector DB, autonomous external actions, mobile, multimodal, federated learning, self-modification, marketplace, own LLM.
 
 ## Status
 

@@ -39,7 +39,7 @@ Transports DomainEvents only. No business logic. At-least-once delivery; idempot
 Append-only. Authority for history. Enforces aggregateVersion ordering and idempotencyKey rules (AAS-Buch2).
 
 **Projection**  
-Derived state only. Rebuildable from EventStore. MUST NOT generate new entity UUIDs on replay. DELETE PROJECTIONS → REPLAY → IDENTICAL STATE (AAS-53).
+Derived state only. Rebuildable from EventStore. MUST NOT generate new entity UUIDs on replay. DELETE PROJECTIONS → REPLAY → IDENTICAL STATE (AAS-54).
 
 **Scheduler**  
 Triggers Reflection / Dream / Maintenance cycles. Does not contain cognitive formulas. Passes work to Domain via commands.
