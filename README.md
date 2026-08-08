@@ -13,8 +13,8 @@ See [`docs/README.md`](docs/README.md) for normative hierarchy and agent protoco
 | Specs | Normative, self-contained (**AKP 0.1.4 / 0.2.5**, AAS-Buch2 0.3.4) |
 | Phase 04 — Physics Conformance | **COMPLETE / GREEN** (CV-01..CV-44) |
 | Phase 05 — Database + Event Store | **COMPLETE / GREEN** |
-| Phase 06 — Memory Domain | **IN PROGRESS** |
-| Phase 07 — Projection | **NEXT** (after Phase 06 GREEN) |
+| Phase 06 — Memory Domain | **COMPLETE / GREEN** |
+| Phase 07 — Projection | **NEXT** |
 
 Authoritative phase order: **AMBC 0.1.2 §8** + **Build Manifest 0.2.1**. Do not renumber.
 
@@ -43,7 +43,7 @@ pnpm test:architecture
 node phase04/run.mjs
 ```
 
-## Phase 06 (IN PROGRESS)
+## Phase 06 (COMPLETE / GREEN)
 
 Memory Domain (`@ailexsi/memory`) — create / get / update / archive / restore / getHistory via EventStore only.
 
@@ -53,6 +53,8 @@ Packages:
 - `@ailexsi/persistence` — events table
 - `@ailexsi/eventstore` — append-only EventStore
 - `@ailexsi/memory` — MemoryDomain service (EventStore write path, rebuildable projection, AAS-54)
+
+Acceptance verified from clean checkout against live PostgreSQL: create, get, update (immutable versions), archive, restore, getHistory, provenance enforcement, temporal invariants, idempotency, concurrency/version enforcement, event emission, projection reconstruction, DELETE projection → REPLAY → identical state. CognitiveStateVector is a deterministic zero placeholder (Physics Phase 08). 54/54 tests PASS, 0 skips. Phase 04 remains GREEN.
 
 ```bash
 pnpm install
