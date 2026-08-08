@@ -81,7 +81,7 @@ describe("MemoryDomain (live EventStore integration + AAS-54 replay)", () => {
     expect(cell.provenance.sourceType).toBe("user");
     expect(cell.cognitiveState.physicsVersion).toBe("0.1.4");
     expect(cell.lifecycle.state).toBe("active");
-    const got = await domain.get(cell.identity.memoryId);
+    const got = await domain.get(cell.identity.id);
     expect(got).not.toBeNull();
     expect(got!.currentVersion).toBe(1);
   });
@@ -103,13 +103,13 @@ describe("MemoryDomain (live EventStore integration + AAS-54 replay)", () => {
       provenance: makeProvenance(),
       idempotencyKey: randomUUID(),
     });
-    const updated = await domain.update(created.identity.memoryId, {
+    const updated = await domain.update(created.identity.id, {
       content: makeContent("v2"),
       idempotencyKey: randomUUID(),
       changeReason: "test-update",
     });
     expect(updated.currentVersion).toBe(2);
-    const history = await domain.getHistory(created.identity.memoryId);
+    const history = await domain.getHistory(created.identity.id);
     expect(history.map((h) => h.version)).toEqual([1, 2]);
     expect(history[0]!.content).toMatchObject({ text: "v1" });
     expect(history[1]!.content).toMatchObject({ text: "v2" });
@@ -121,17 +121,17 @@ describe("MemoryDomain (live EventStore integration + AAS-54 replay)", () => {
       provenance: makeProvenance(),
       idempotencyKey: randomUUID(),
     });
-    const archived = await domain.archive(created.identity.memoryId, {
+    const archived = await domain.archive(created.identity.id, {
       idempotencyKey: randomUUID(),
       reason: "test-archive",
     });
     expect(archived.lifecycle.state).toBe("archived");
-    const restored = await domain.restore(created.identity.memoryId, {
+    const restored = await domain.restore(created.identity.id, {
       idempotencyKey: randomUUID(),
       reason: "test-restore",
     });
     expect(restored.lifecycle.state).toBe("active");
-    const history = await domain.getHistory(created.identity.memoryId);
+    const history = await domain.getHistory(created.identity.id);
     expect(history.length).toBeGreaterThanOrEqual(3);
   });
 
@@ -144,7 +144,7 @@ describe("MemoryDomain (live EventStore integration + AAS-54 replay)", () => {
     };
     const first = await domain.create(cmd);
     const second = await domain.create(cmd);
-    expect(second.identity.memoryId).toBe(first.identity.memoryId);
+    expect(second.identity.id).toBe(first.identity.id);
     expect(second.currentVersion).toBe(1);
   });
 
@@ -154,7 +154,7 @@ describe("MemoryDomain (live EventStore integration + AAS-54 replay)", () => {
       provenance: makeProvenance(),
       idempotencyKey: randomUUID(),
     });
-    const id = created.identity.memoryId;
+    const id = created.identity.id;
 
     await domain.update(id, {
       content: makeContent("replay-v2"),
