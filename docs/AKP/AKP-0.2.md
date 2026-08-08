@@ -1,9 +1,9 @@
 # AKP – AILEXSI Kernel Physics
 
-**Version:** 0.2.2  
+**Version:** 0.2.3  
 **Status:** Normative (self-contained)  
 **Scope:** Graph Physics, Retrieval Physics and Cognitive Resource Model  
-**Dependencies:** AKP 0.1.2, ACS, AKP-Parameter-Sets-0.1
+**Dependencies:** AKP 0.1.3, ACS 0.1.1, AKP-Parameter-Sets-0.1
 
 Every formula in this document has a concrete purpose in the Cortex. No speculative mathematics.
 
@@ -30,8 +30,27 @@ supports, contradicts, extends, derived_from, inspired_by, causes, caused_by, re
 ### 15.3 Directed vs Bidirectional (mandatory)
 
 Symmetric types (`similar_to`, `related_to`, `duplicates`) **MUST** be stored as two directed edges (A→B and B→A) with identical strength and type.  
-All other types remain strictly directed (single edge).  
-This rule is mandatory so that Degree, WeightedDegree, Centrality, Distance and Bridge remain deterministic.
+All other types remain strictly directed (single edge).
+
+### 15.4 Canonical Cluster Definition (MVP)
+
+```text
+A Cluster is a connected component over accepted, non-deprecated Relations
+using the canonical direction rules of §15.3.
+
+Included: status ∈ {accepted}
+Excluded: status ∈ {hypothesis, proposed, rejected, deprecated}
+
+ClusterId is supplied by KnowledgeDomain as an immutable normalized input
+to PhysicsCalculation. AKP does not create or mutate clusters.
+
+PossibleEdges for a cluster of size n (directed):
+  PossibleEdges = n × (n − 1)
+  (self-loops excluded)
+
+If n ≤ 1: Density = 0, Cohesion = 0, IslandScore = 0.
+If total_clusters = 0: ClusterDiversity(v) = 0, Bridge(v) = 0.
+```
 
 ---
 
@@ -84,18 +103,22 @@ G_v = Clamp(M_v × R_v × Connectivity_v × (1 + Centrality_v), 0, 1)
 
 ```text
 Density   = ActualEdges / max(1, PossibleEdges)
-Cohesion  = mean(S_internal)
+Cohesion  = mean(S_internal) over edges inside the cluster
 Growth    = (ΔNodes + ΔEdges) / max(1, Δt)
 ```
+
+Cluster membership: §15.4.
 
 ---
 
 ## AKP-19 Knowledge Bridges
 
 ```text
-ClusterDiversity(v) = number of distinct clusters that v connects / total_clusters
+ClusterDiversity(v) = number of distinct clusters that v connects / max(1, total_clusters)
 Bridge(v)           = Clamp(Centrality(v) × ClusterDiversity(v) × N_v, 0, 1)
 ```
+
+If total_clusters = 0 → ClusterDiversity = 0, Bridge = 0.
 
 ---
 
@@ -105,7 +128,7 @@ Bridge(v)           = Clamp(Centrality(v) × ClusterDiversity(v) × N_v, 0, 1)
 Cost(e)       = 1 − S_e
 Distance(A,B) = sum of Costs along shortest path
 ```
-Infinity if unreachable.
+Infinity if unreachable. Only accepted, non-deprecated edges participate.
 
 ---
 
@@ -120,40 +143,69 @@ Score(Q,M)      = Clamp(Σ w_i · signal_i, 0, 1)
 ```
 Missing component values default to 0.0.
 
+### AKP-21.1 Deterministic Retrieval Pipeline (MVP)
+
+```text
+1. Generate semantic candidates from EmbeddingProvider.
+2. Candidate set = top 100 by semantic similarity.
+3. Tie-break = MemoryId ascending (lexicographic UUID).
+4. Expand accepted graph relations up to 2 hops from each candidate.
+5. Deduplicate by MemoryId.
+6. Apply temporal filter (if domain decay active).
+7. Reject Confidence < confidence_threshold (default 0.0 = no reject).
+8. Calculate all seven Retrieval signals for remaining candidates.
+9. Calculate RetrievalScore.
+10. Sort descending by RetrievalScore.
+11. Tie-break MemoryId ascending.
+12. Apply diversity penalty during sequential selection (§AKP-24).
+13. Return maximum final_k results (default final_k = 20).
+```
+
+All thresholds (top_k=100, hops=2, confidence_threshold=0.0, final_k=20) are PhysicsParameters.
+
 ---
 
 ## AKP-22 Temporal Relevance
 
 ```text
-TemporalRelevance = e^(−λ · Δt)
+TemporalRelevance = exp(−lambda_decay · Δt)
 ```
-Only when the Knowledge Domain has temporal decay activated (default λ = 0).
+Only when the Knowledge Domain has temporal decay activated (default lambda_decay = 0).
 
 ---
 
-## AKP-23 Cognitive Retrieval Pipeline
+## AKP-24 Diversity Penalty (sequential greedy)
 
 ```text
-Semantic Retrieval → Graph Expansion (1–2 hops) → Temporal Filtering
-→ Trust Filtering (Confidence ≥ threshold) → Resonance Ranking
-→ Diversity Filtering → Final Context Window
+Candidates are considered in descending Base RetrievalScore order
+(tie-break MemoryId ascending).
+
+For each candidate:
+  penalty = 1.0
+  For every already-selected result:
+    if same independenceGroup:
+      penalty = min(penalty, 0.5)
+    if cosineSimilarity(candidate, selected) > 0.92:
+      penalty = min(penalty, 0.5)
+  AdjustedScore = BaseScore × penalty
+
+Select candidate if AdjustedScore is still among the best remaining
+and final_k not yet reached.
+
+Penalty is applied at most once per already-selected match type
+(independenceGroup OR cosine). Multiple matches do not stack beyond 0.5
+(using min, not product).
 ```
-
----
-
-## AKP-24 Diversity Penalty
-
-Results that share the same independenceGroup or have cosine similarity > 0.92 to an already selected result are down-ranked by factor 0.5.
 
 ---
 
 ## AKP-25 Cognitive Attention Budget
 
 ```text
-B_total = 100                    # abstract capacity units (MVP default)
-maintenance_reservation = 0.15   # 15 % of B_total reserved
+B_total = 100
+maintenance_reservation = 0.15
 ```
-Every operation declares an estimated Cost_i ≥ 0. Constraint: Σ Cost_i ≤ B_total.
+Every operation declares Cost_i ≥ 0. Constraint: Σ Cost_i ≤ B_total.
 
 ---
 
@@ -163,8 +215,11 @@ Every operation declares an estimated Cost_i ≥ 0. Constraint: Σ Cost_i ≤ B_
 Relevance  = Retrieval Score for current context
 Urgency    = 1.0 if user-initiated or deadline-driven, else Temperature
 Potential  = Energy of the Cell
-Priority   = Clamp(I × Relevance × Urgency × Potential × (optional Trust), 0, 1)
+
+Priority = Clamp(I × Relevance × Urgency × Potential, 0, 1)
 ```
+
+**No optional factors.** Trust is not part of Priority in MVP.
 
 ---
 
@@ -180,6 +235,7 @@ Priority   = Clamp(I × Relevance × Urgency × Potential × (optional Trust), 0
      else: skip
 6. ExplorationRate = 0.30 if Dream Mode active, else 0.10
 ```
+
 Identical input + parameter set → identical allocation.
 
 ---
@@ -194,19 +250,34 @@ Cognitive Saturation: when additional context changes top-k ranking by < 0.02, s
 
 ---
 
-## AKP-31 Dream Mode 2.0
+## AKP-31 Dream Mode 2.0 (canonical)
 
 ```text
 BridgePotential     = Bridge(A) × Bridge(B)
 AttentionAllocation = remaining_Budget / B_total
-D = Clamp(E_A × E_B × BridgePotential × N × T_g × AttentionAllocation × (1 − S_r), 0, 1)
+T_g                 = min(Confidence_A, Confidence_B)
+S_r                 = existing Relation Strength between A and B (0 if none)
+
+D = Clamp(
+      E_A × E_B
+    × BridgePotential
+    × N
+    × T_g
+    × AttentionAllocation
+    × (1 − S_r),
+  0, 1)
 ```
+
+formulaVersion for this formula: `dream-2.0.0`  
+physicsVersion: `0.2.3`  
+parameterSet: AKP-PS-010
 
 ---
 
 ## AKP-32 Dream Safety Gate
 
-All must hold: T_g ≥ 0.4, N ≥ 0.3, S_r ≤ 0.5. Otherwise rejection. Output = HYPOTHESIS / CANDIDATE only.
+All must hold: T_g ≥ 0.4, N ≥ 0.3, S_r ≤ 0.5. Otherwise rejection.  
+Output = HYPOTHESIS / CANDIDATE only. Never Fact.
 
 ---
 
@@ -240,7 +311,7 @@ Empty graph / empty cluster → IslandScore = 0.0.
 
 | ID | Invariant |
 |----|-----------|
-| I1 | All scores lie in their defined range |
+| I1 | All Scores lie in [0,1]; Rates are unrestricted |
 | I2 | Identical inputs → identical outputs |
 | I3 | Physics-version change does not alter historical calculations |
 | I4 | Dream Mode produces no Fact-Cells |
@@ -250,9 +321,11 @@ Empty graph / empty cluster → IslandScore = 0.0.
 | I8 | High Emergence never automatically produces high Confidence |
 | I9 | Graph Centrality does not automatically mean Truth or Importance |
 | I10 | Physics possesses no side effects |
+| I11 | Priority contains no optional factors |
+| I12 | Cluster membership is an immutable input to Physics |
 
 ---
 
 ## Status
 
-AKP 0.2.2 is fully self-contained. All formulas and defaults are defined in this document. Parameter Sets freeze numeric values for conformance testing.
+AKP 0.2.3 is fully self-contained. Clusters, Retrieval pipeline, Diversity, Priority and Dream 2.0 are deterministically defined.
