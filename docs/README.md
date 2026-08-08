@@ -62,8 +62,8 @@ Higher overrides lower. Canonical documents are the single source of truth.
 | Phase | Name | Status |
 |-------|------|--------|
 | 04 | Physics Conformance Suite (CV-01..CV-44) | **COMPLETE / GREEN** |
-| 05 | Database + Event Store | **NEXT** (authoritative) |
-| 06 | Memory Domain | Subsequent |
+| 05 | Database + Event Store | **IN PROGRESS** |
+| 06 | Memory Domain | **NEXT** (blocked until Phase 05 COMPLETE) |
 
 Authoritative order: **AMBC 0.1.2 §8** + **Build Manifest 0.2.1**. Do not renumber.
 
@@ -77,6 +77,10 @@ node phase04/run.mjs
 - Default: verify-only, does **not** write `phase04-report.json` (clean worktree).
 - Optional: `node phase04/run.mjs --write` for stable report with provenance.
 - Authoritative result after `--write`: `phase04-report.json`.
+
+## Phase 05 (IN PROGRESS)
+
+Database + Event Store. See root README for workspace bootstrap, Docker Postgres, and test commands.
 
 ## Agent Start Protocol
 
