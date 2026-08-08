@@ -44,5 +44,6 @@
 | dream-safety-gate-1.0.0 | 1.0.0 | AKP-0.2 §32 |
 | emergence-1.0.0 | 1.0.0 | AKP-0.2 §33 |
 | island-score-1.0.0 | 1.0.0 | AKP-0.2 §34 |
+| learning-feedback-map-1.0.0 | 1.0.0 | AKP-Learning-0.1 |
 
 Changing math → new formulaVersion + registry update. No duplicates.
