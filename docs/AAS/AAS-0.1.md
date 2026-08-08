@@ -3,7 +3,7 @@
 **Version:** 0.1.2  
 **Status:** Normative  
 **Scope:** Domain Architecture, Bounded Contexts, Module Boundaries and System Contracts  
-**Dependencies:** ACS 0.1.1 + AKP 0.1.3 + AKP 0.2.3
+**Dependencies:** ACS 0.1.1 + AKP 0.1.3 + AKP 0.2.4
 
 ---
 
@@ -38,7 +38,7 @@ AKP is a pure Computational Domain used by multiple Contexts as a service.
 |--------------|-----------------------------------------------------|
 | Memory       | Memory Cells, versioning, Provenance, Lifecycle     |
 | Identity     | User values, Mission, Goals, Roles, Principles      |
-| Knowledge    | Graph, Relations, Clusters, Bridges                 |
+| Knowledge    | Graph, Relations, Clusters, Bridges (cluster authority) |
 | Trust        | Evidence, Confidence, Contradiction Signals         |
 | Reflection   | temporal patterns, Trends, Insights                 |
 | Reasoning    | Hypotheses and conclusions                          |
@@ -48,8 +48,7 @@ AKP is a pure Computational Domain used by multiple Contexts as a service.
 | History      | immutable Event Store                               |
 | Retrieval    | Context assembly                                    |
 
-Infrastructure (not cognitive capabilities):  
-AI Gateway, Event Bus, Persistence, Vector Index, Graph Store, Scheduler, API Gateway, Authentication, Observability.
+Infrastructure: AI Gateway, Event Bus, Persistence, Vector Index, Graph Store, Scheduler, API Gateway, Authentication, Observability.
 
 ---
 
@@ -59,10 +58,6 @@ AI Gateway, Event Bus, Persistence, Vector Index, Graph Store, Scheduler, API Ga
 Commands  → produce Domain Events (write side)
 Queries   → use synchronous read Interfaces (read side, no side effects)
 ```
-
-No direct call `otherModule.mutateSomething()`.  
-All state changes travel exclusively through Domain Events + Event Bus.  
-Query Interfaces are read-only and may be called synchronously.
 
 ---
 
@@ -84,8 +79,6 @@ interface EmbeddingProvider {
 }
 ```
 
-AIProvider and EmbeddingProvider are independent contracts and may be replaced separately.
-
 ---
 
 ## AAS-22 DomainEvent (canonical, must match AAS-Buch2)
@@ -105,15 +98,15 @@ interface DomainEvent<T = unknown> {
 }
 ```
 
-**Rules** (see AAS-Buch2 for full aggregateVersion and idempotencyKey semantics):
-- Events of the same aggregate MUST be applied in strictly ascending `aggregateVersion` order.
-- `idempotencyKey` MUST be unique across the Event Store. Duplicate keys are rejected.
-- DomainEvent is the persisted fact. EventEnvelope (if used) is only a transport wrapper.
-- Command ≠ Event. Commands produce Events; Queries never produce Events.
+**idempotencyKey rules (canonical, identical to AAS-Buch2):**
+- same key + identical payload → return original command result, append no new event
+- same key + different payload → integrity violation / reject
+
+**aggregateVersion:** first event = 1; each subsequent = previous + 1 (see AAS-Buch2).
 
 ---
 
 ## AAS-25 Architekturtest
 
-Every external component (LLM, Vector DB, Graph DB, Frontend, Cloud, Event infrastructure) must be replaceable without rewriting the Cortex.  
+Every external component must be replaceable without rewriting the Cortex.  
 The Kernel (Physics, Cognitive State, Event Contracts, Cognitive Laws) remains stable.
