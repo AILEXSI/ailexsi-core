@@ -1,6 +1,6 @@
 # AKP – AILEXSI Kernel Physics
 
-**Version:** 0.2.3  
+**Version:** 0.2.4  
 **Status:** Normative (self-contained)  
 **Scope:** Graph Physics, Retrieval Physics and Cognitive Resource Model  
 **Dependencies:** AKP 0.1.3, ACS 0.1.1, AKP-Parameter-Sets-0.1
@@ -29,20 +29,32 @@ supports, contradicts, extends, derived_from, inspired_by, causes, caused_by, re
 
 ### 15.3 Directed vs Bidirectional (mandatory)
 
-Symmetric types (`similar_to`, `related_to`, `duplicates`) **MUST** be stored as two directed edges (A→B and B→A) with identical strength and type.  
+Symmetric types (`similar_to`, `related_to`, `duplicates`) **MUST** be stored as two directed edges (A→B and B→A) with identical type and identical strength.
+
+**Symmetric relation integrity rule:**
+```text
+A symmetric relation is conformant only when both directed edges exist
+with identical type and strength.
+Missing counterpart = graph integrity violation.
+PhysicsCalculation MUST reject a snapshot that contains a one-sided
+symmetric relation.
+```
+
 All other types remain strictly directed (single edge).
 
 ### 15.4 Canonical Cluster Definition (MVP)
 
 ```text
-A Cluster is a connected component over accepted, non-deprecated Relations
-using the canonical direction rules of §15.3.
+KnowledgeDomain is the sole authority for cluster membership.
 
-Included: status ∈ {accepted}
-Excluded: status ∈ {hypothesis, proposed, rejected, deprecated}
+AKP MUST NOT derive, invent, or mutate cluster membership.
 
-ClusterId is supplied by KnowledgeDomain as an immutable normalized input
-to PhysicsCalculation. AKP does not create or mutate clusters.
+PhysicsCalculation.inputSnapshot MUST contain, for every participating node:
+  clusterId: string | null
+
+If a required clusterId is missing or inconsistent with KnowledgeDomain's
+authoritative membership at calculation time, the calculation MUST reject
+the snapshot (status = rejected_snapshot).
 
 PossibleEdges for a cluster of size n (directed):
   PossibleEdges = n × (n − 1)
@@ -107,7 +119,7 @@ Cohesion  = mean(S_internal) over edges inside the cluster
 Growth    = (ΔNodes + ΔEdges) / max(1, Δt)
 ```
 
-Cluster membership: §15.4.
+Cluster membership: §15.4 (KnowledgeDomain authority only).
 
 ---
 
@@ -132,7 +144,46 @@ Infinity if unreachable. Only accepted, non-deprecated edges participate.
 
 ---
 
-## AKP-21 Retrieval Physics
+## AKP-21 Semantic Similarity (canonical)
+
+```text
+cosine(a, b) = (a · b) / (||a||_2 × ||b||_2)
+
+SemanticSimilarity(q, m) = cosine(embedding_q, embedding_m)
+Range: [-1, 1] mathematically; for RetrievalScore the signal is
+  S = Clamp((SemanticSimilarity + 1) / 2, 0, 1)   // maps to [0,1]
+```
+
+**Zero-vector behavior:**
+```text
+If ||a||_2 = 0 OR ||b||_2 = 0:
+  cosine(a, b) := 0
+  SemanticSimilarity := 0
+```
+
+**Dimension mismatch:**
+```text
+If dim(a) ≠ dim(b): calculation MUST reject the snapshot
+(status = rejected_snapshot). No silent truncation or padding.
+```
+
+**Embedding identity requirements (in inputSnapshot):**
+```text
+embeddingModelId
+embeddingModelVersion
+embeddingDimension
+embeddingInputHash
+embeddingVectorHash
+embeddingProvider
+```
+
+**Numerical tolerance for conformance:** absolute 1e-9 for cosine; absolute 1e-6 for mapped S.
+
+formulaVersion: `semantic-similarity-1.0.0`
+
+---
+
+## AKP-21.1 Retrieval Physics Score
 
 Default weights (sum=1): w_s=0.30, w_g=0.15, w_t=0.10, w_r=0.15, w_m=0.10, w_c=0.10, w_n=0.10
 
@@ -143,25 +194,33 @@ Score(Q,M)      = Clamp(Σ w_i · signal_i, 0, 1)
 ```
 Missing component values default to 0.0.
 
-### AKP-21.1 Deterministic Retrieval Pipeline (MVP)
+---
+
+## AKP-21.2 Deterministic Retrieval Pipeline (MVP)
+
+Parameters (canonical identifiers, AKP-PS-012):
+```text
+retrieval_initial_top_k        = 100
+retrieval_graph_hops           = 2
+retrieval_confidence_threshold = 0.0
+retrieval_final_k              = 20
+```
 
 ```text
 1. Generate semantic candidates from EmbeddingProvider.
-2. Candidate set = top 100 by semantic similarity.
+2. Candidate set = top retrieval_initial_top_k by SemanticSimilarity (mapped S).
 3. Tie-break = MemoryId ascending (lexicographic UUID).
-4. Expand accepted graph relations up to 2 hops from each candidate.
+4. Expand accepted graph relations up to retrieval_graph_hops hops from each candidate.
 5. Deduplicate by MemoryId.
 6. Apply temporal filter (if domain decay active).
-7. Reject Confidence < confidence_threshold (default 0.0 = no reject).
+7. Reject Confidence < retrieval_confidence_threshold.
 8. Calculate all seven Retrieval signals for remaining candidates.
 9. Calculate RetrievalScore.
-10. Sort descending by RetrievalScore.
-11. Tie-break MemoryId ascending.
-12. Apply diversity penalty during sequential selection (§AKP-24).
-13. Return maximum final_k results (default final_k = 20).
+10. Apply diversity selection (§AKP-24) until retrieval_final_k or candidates exhausted.
+11. Return selected results in selection order.
 ```
 
-All thresholds (top_k=100, hops=2, confidence_threshold=0.0, final_k=20) are PhysicsParameters.
+AKP MUST reference these exact parameter identifiers. No hard-coded literals outside the Parameter Set.
 
 ---
 
@@ -174,28 +233,40 @@ Only when the Knowledge Domain has temporal decay activated (default lambda_deca
 
 ---
 
-## AKP-24 Diversity Penalty (sequential greedy)
+## AKP-24 Diversity Selection (deterministic greedy)
 
 ```text
-Candidates are considered in descending Base RetrievalScore order
-(tie-break MemoryId ascending).
+selected = []
+remaining = all candidates after step 9 of pipeline
 
-For each candidate:
-  penalty = 1.0
-  For every already-selected result:
-    if same independenceGroup:
-      penalty = min(penalty, 0.5)
-    if cosineSimilarity(candidate, selected) > 0.92:
-      penalty = min(penalty, 0.5)
-  AdjustedScore = BaseScore × penalty
+while |selected| < retrieval_final_k AND remaining is not empty:
+  best = null
+  bestScore = -Infinity
+  bestId = null
 
-Select candidate if AdjustedScore is still among the best remaining
-and final_k not yet reached.
+  for each candidate c in remaining:
+    penalty = 1.0
+    for each s in selected:
+      if c.independenceGroup == s.independenceGroup:
+        penalty = min(penalty, diversity_penalty_factor)
+      if cosineSimilarity(c.embedding, s.embedding) > diversity_cosine_threshold:
+        penalty = min(penalty, diversity_penalty_factor)
+    adjusted = c.baseRetrievalScore × penalty
 
-Penalty is applied at most once per already-selected match type
-(independenceGroup OR cosine). Multiple matches do not stack beyond 0.5
-(using min, not product).
+    if adjusted > bestScore
+       OR (adjusted == bestScore AND c.memoryId < bestId lexicographically):
+      best = c
+      bestScore = adjusted
+      bestId = c.memoryId
+
+  append best to selected
+  remove best from remaining
+
+return selected
 ```
+
+Parameters: `diversity_cosine_threshold` (0.92), `diversity_penalty_factor` (0.5) from AKP-PS-007.
+No alternate interpretation is permitted. Selection is fully determined by scores and MemoryId.
 
 ---
 
@@ -213,11 +284,22 @@ Every operation declares Cost_i ≥ 0. Constraint: Σ Cost_i ≤ B_total.
 
 ```text
 Relevance  = Retrieval Score for current context
-Urgency    = 1.0 if user-initiated or deadline-driven, else Temperature
 Potential  = Energy of the Cell
 
 Priority = Clamp(I × Relevance × Urgency × Potential, 0, 1)
 ```
+
+**Urgency is an explicit normalized input. Physics MUST NOT infer it.**
+
+```text
+urgencySource: "user" | "deadline" | "system" | "temperature"
+urgencyValue:  Score   // [0,1], supplied in inputSnapshot
+
+Urgency = urgencyValue
+```
+
+If urgencySource/urgencyValue are missing from the snapshot, Urgency defaults to 0.0
+(not Temperature). Physics never decides "deadline-driven" itself.
 
 **No optional factors.** Trust is not part of Priority in MVP.
 
@@ -250,6 +332,22 @@ Cognitive Saturation: when additional context changes top-k ranking by < 0.02, s
 
 ---
 
+## AKP-29 ConnectivityPotential count rule
+
+```text
+count = number of distinct high_Mass targets (Mass ≥ high_Mass_threshold)
+        within Graph Distance ≤ max_graph_distance
+        for which the relation is either missing OR weak (S_r < weak_relation_threshold).
+
+Each qualifying high_Mass target counts exactly once.
+ConnectivityPotential = min(1, count / denominator)
+```
+
+Defaults from AKP-PS-005: high_Mass_threshold=0.6, weak_relation_threshold=0.4,
+max_graph_distance=2, denominator=5.
+
+---
+
 ## AKP-31 Dream Mode 2.0 (canonical)
 
 ```text
@@ -268,8 +366,8 @@ D = Clamp(
   0, 1)
 ```
 
-formulaVersion for this formula: `dream-2.0.0`  
-physicsVersion: `0.2.3`  
+formulaVersion: `dream-2.0.0`  
+physicsVersion: `0.2.4`  
 parameterSet: AKP-PS-010
 
 ---
@@ -307,12 +405,36 @@ Empty graph / empty cluster → IslandScore = 0.0.
 
 ---
 
-## AKP-36 Invariants
+## AKP-36 Explainability (normative)
+
+Every automatic score MUST be reconstructible from PhysicsCalculation:
+```text
+formulaId
+formulaVersion
+parameterSetId
+parameterSetVersion
+parameterSet (actual values)
+inputSnapshot
+output
+```
+
+Missing any of these fields makes the calculation non-conformant.
+
+---
+
+## AKP-37 Numerical Determinism
+
+1. **Same-implementation determinism:** identical input + parameter set + physics/formula version → bit-identical output within one runtime (IEEE-754 binary64 assumed).
+2. **Cross-implementation conformance:** outputs MUST match within the absolute tolerance stated per Conformance Vector (default 1e-6 for Scores, 1e-9 for cosine). Bit-identical cross-language results are NOT claimed unless a vector explicitly requires it.
+
+---
+
+## AKP-38 Invariants
 
 | ID | Invariant |
 |----|-----------|
 | I1 | All Scores lie in [0,1]; Rates are unrestricted |
-| I2 | Identical inputs → identical outputs |
+| I2 | Identical inputs → identical outputs (same-implementation) |
 | I3 | Physics-version change does not alter historical calculations |
 | I4 | Dream Mode produces no Fact-Cells |
 | I5 | Retrieval never uses exclusively semantic similarity |
@@ -322,10 +444,13 @@ Empty graph / empty cluster → IslandScore = 0.0.
 | I9 | Graph Centrality does not automatically mean Truth or Importance |
 | I10 | Physics possesses no side effects |
 | I11 | Priority contains no optional factors |
-| I12 | Cluster membership is an immutable input to Physics |
+| I12 | Cluster membership is an immutable input; AKP never derives it |
+| I13 | Symmetric relations require both directed edges with identical type and strength |
+| I14 | Urgency is an explicit input; Physics never infers it |
+| I15 | Every score is reconstructible from PhysicsCalculation fields |
 
 ---
 
 ## Status
 
-AKP 0.2.3 is fully self-contained. Clusters, Retrieval pipeline, Diversity, Priority and Dream 2.0 are deterministically defined.
+AKP 0.2.4 is fully self-contained. Semantic similarity, diversity selection, cluster authority, urgency input, symmetric integrity and connectivity count are deterministically defined.
