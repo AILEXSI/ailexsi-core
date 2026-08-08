@@ -2,6 +2,7 @@
 
 **Status:** EXECUTABLE CHECKLIST  
 **Aligned with:** AMBC 0.1.1 Build Order  
+**Physics:** AKP 0.1.4 / 0.2.5  
 Phase numbers match AMBC §8 exactly.
 
 ---
@@ -10,7 +11,7 @@ Phase numbers match AMBC §8 exactly.
 ## PHASE 02 – Repository Skeleton
 ## PHASE 03 – Contracts
 ## PHASE 04 – Physics Conformance Suite  ← HARD GATE
-All CV-01..CV-26 green. No domain/DB/provider imports.  
+All **CV-01..CV-44** green within tolerance. No domain/DB/provider imports.  
 **Phases 05–22 MUST NOT start until Phase 04 is fully green.**
 
 ## PHASE 05 – Database + Event Store
@@ -42,5 +43,6 @@ Capture → … → DELETE PROJECTIONS → REPLAY → IDENTICAL STATE.
 ```text
 Read AMBC 0.1.1 and this Build Manifest 0.2.
 Execute STEP 0–3. Begin Phase 04 only when blockers = 0.
+Phase 04 requires ALL CV-01..CV-44 green.
 Work strictly phase by phase. No free features. No architecture inventions.
 ```
