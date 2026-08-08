@@ -46,9 +46,9 @@ function makeProvenance(overrides: Partial<Provenance> = {}): Provenance {
 
 function makeContent(text = "hello memory"): MemoryContent {
   return {
-    kind: "text",
+    type: "text",
     text,
-  } as MemoryContent;
+  };
 }
 
 describe("MemoryDomain (live EventStore integration + AAS-54 replay)", () => {
