@@ -1,7 +1,7 @@
 {
   "status": "GREEN",
   "repository": "AILEXSI/ailexsi-core",
-  "head": "59bf072df97357ed4065bd27ee8d5c36ac405480",
+  "head": "7c05c91b473d97cfd4f7c6696e4d64e603ce2d46",
   "physics": {
     "core": "0.1.4",
     "graph": "0.2.5"
