@@ -1,7 +1,6 @@
 /**
  * Deterministic JSON Schema validator for Phase 04 report schema.
- * Supports the subset used by docs/schemas/conformance_v0.2.5.json:
- * type, required, properties, enum, items, additionalProperties.
+ * Supports: type, required, properties, enum, items, additionalProperties.
  * No network. No external packages.
  */
 export function validateSchema(instance, schema) {
