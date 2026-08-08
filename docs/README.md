@@ -63,7 +63,8 @@ Higher overrides lower. Canonical documents are the single source of truth.
 |-------|------|--------|
 | 04 | Physics Conformance Suite (CV-01..CV-44) | **COMPLETE / GREEN** |
 | 05 | Database + Event Store | **COMPLETE / GREEN** |
-| 06 | Memory Domain | **NEXT** |
+| 06 | Memory Domain | **IN PROGRESS** |
+| 07 | Projection | **NEXT** |
 
 Authoritative order: **AMBC 0.1.2 §8** + **Build Manifest 0.2.1**. Do not renumber.
 
@@ -81,6 +82,10 @@ node phase04/run.mjs
 ## Phase 05 (COMPLETE / GREEN)
 
 Database + Event Store. See root README for workspace bootstrap, Docker Postgres, and test commands.
+
+## Phase 06 (IN PROGRESS)
+
+Memory Domain — MemoryCell, MemoryVersion, Provenance, TemporalMetadata, Lifecycle via EventStore. See root README.
 
 ## Agent Start Protocol
 
