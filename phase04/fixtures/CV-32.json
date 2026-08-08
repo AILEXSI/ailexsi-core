@@ -1,0 +1,20 @@
+{
+  "cvId": "CV-32",
+  "formulaId": "load-1.0.0",
+  "formulaVersion": "1.0.0",
+  "physicsVersion": "0.2.5",
+  "parameterSetId": "PS-009",
+  "parameterSetVersion": "0.1",
+  "input": {
+    "ContextSize": 50,
+    "AttentionCapacity": 100
+  },
+  "expectedOutput": {
+    "Load": 0.5,
+    "status": "ok"
+  },
+  "expectedStatus": "PASS",
+  "tolerance": 1e-06,
+  "comparison": "mixed",
+  "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-32"
+}

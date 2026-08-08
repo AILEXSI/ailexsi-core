@@ -1,0 +1,33 @@
+{
+  "cvId": "CV-36",
+  "formulaId": "cognitive-saturation-1.0.0",
+  "formulaVersion": "1.0.0",
+  "physicsVersion": "0.2.5",
+  "parameterSetId": "PS-009",
+  "parameterSetVersion": "0.1",
+  "input": {
+    "K": 5,
+    "topKBefore": [
+      "a",
+      "b",
+      "c",
+      "d",
+      "e"
+    ],
+    "topKAfter": [
+      "a",
+      "b",
+      "c",
+      "x",
+      "y"
+    ]
+  },
+  "expectedOutput": {
+    "rankingChange": 0.4,
+    "saturated": false
+  },
+  "expectedStatus": "PASS",
+  "tolerance": 1e-06,
+  "comparison": "mixed",
+  "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-36"
+}

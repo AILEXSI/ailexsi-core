@@ -1,0 +1,19 @@
+{
+  "cvId": "CV-34",
+  "formulaId": "load-1.0.0",
+  "formulaVersion": "1.0.0",
+  "physicsVersion": "0.2.5",
+  "parameterSetId": "PS-009",
+  "parameterSetVersion": "0.1",
+  "input": {
+    "ContextSize": 10,
+    "AttentionCapacity": 0
+  },
+  "expectedOutput": {
+    "status": "rejected_snapshot"
+  },
+  "expectedStatus": "REJECTED",
+  "tolerance": 0,
+  "comparison": "exact",
+  "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-34"
+}

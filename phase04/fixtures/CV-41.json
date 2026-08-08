@@ -1,0 +1,26 @@
+{
+  "cvId": "CV-41",
+  "formulaId": null,
+  "formulaVersion": null,
+  "physicsVersion": "0.1.4",
+  "parameterSetId": null,
+  "parameterSetVersion": null,
+  "input": {
+    "physicsCalculation": {
+      "formulaVersion": "1.0.0",
+      "physicsVersion": "0.1.4",
+      "parameterSetId": "PS-002",
+      "parameterSetVersion": "0.1",
+      "parameterSet": {},
+      "inputSnapshot": {},
+      "output": {}
+    }
+  },
+  "expectedOutput": {
+    "status": "non-conformant"
+  },
+  "expectedStatus": "REJECTED",
+  "tolerance": 0,
+  "comparison": "exact",
+  "sourceReference": "docs/AKP/AKP-Conformance-Vectors-0.1.md \u00a7CV-41"
+}
