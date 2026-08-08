@@ -1,6 +1,6 @@
 # AKP – AILEXSI Kernel Physics
 
-**Version:** 0.1.2  
+**Version:** 0.1.3  
 **Status:** Normative (self-contained)  
 **Scope:** Mathematical and time-dependent core models of the AILEXSI Cortex  
 **Dependencies:** ACS 0.1.1, AKP-Parameter-Sets-0.1
@@ -10,7 +10,8 @@
 ## AKP-0 Fundament
 
 ### 0.1 Wertebereich
-All dimensionless cognitive scores are normalized to [0, 1] unless explicitly specified otherwise.
+All dimensionless **Scores** are normalized to [0, 1] unless explicitly classified otherwise.  
+**Rates** (e.g. Velocity) are not Scores and are not restricted to [0, 1].
 
 ### 0.2 Determinismus
 Identical input + parameters + Physics version → identical output. Random seed must be persisted when used.
@@ -21,27 +22,29 @@ Every parameter is explicitly declared (name, value, range, unit, source, versio
 ### 0.4 Physik-Engine-Grenzen
 No LLMs, no databases, no GUIs, no network, no mutations, no semantic decisions. Pure calculation only.
 
+### 0.5 FormulaVersion Rule
+Any normative change to a formula, its input semantics, operation ordering, numerical behavior, edge-case behavior or parameter interpretation MUST increment `formulaVersion`.
+
 ---
 
 ## AKP-1 Zeit als Dimension
 
 ```text
-Age(t) = (t − created_at) / T_scale
+Age(t) = (t − createdAt) / T_scale
 ```
 
 T_scale PhysicsParameter (default):
 ```text
-name: T_scale  value: 31536000  unit: s  range: [86400, 315360000]  version: 0.1.2
+name: T_scale  value: 31536000  unit: s  range: [86400, 315360000]  version: 0.1.3
 ```
 
 ```text
-D(t) = e^(−λ · Δt)
+D(t) = exp(−lambda_decay · Δt)
 ```
-Δt = time since last confirmation (confirmed_at).
+Δt = time since last confirmation (confirmedAt).
 
-lambda_decay PhysicsParameter (default):
 ```text
-name: lambda_decay  value: 0.0  unit: 1/s  range: [0, 1e-5]  version: 0.1.2
+name: lambda_decay  value: 0.0  unit: 1/s  range: [0, 1e-5]  version: 0.1.3
 ```
 
 ---
@@ -52,7 +55,7 @@ name: lambda_decay  value: 0.0  unit: 1/s  range: [0, 1e-5]  version: 0.1.2
 |--------|--------|-------|--------------|
 | Importance | I | [0,1] | Explicit user priority or heuristic |
 | Usage | U | [0,1] | Normalized access count in rolling window |
-| Evidence Strength | E | [0,1] | Aggregated reliability of linked Evidence |
+| Evidence Strength | E | [0,1] | Aggregated EffectiveReliability of linked Evidence |
 | Source Diversity | SD | [0,1] | Fraction of independent independenceGroups |
 | Contradiction | C | [0,1] | Strength of contradicting Evidence |
 | Novelty | N | [0,1] | 1 − max cosine similarity to existing Cells |
@@ -68,30 +71,44 @@ U = min(1, access_count_in_rolling_window / access_window_size)
 ```
 Default window = 30 days, access_window_size = 20.
 
+**EffectiveReliability (canonical helper)**  
+```text
+EffectiveReliability(e) = e.reliability if present else 0.5
+```
+All Physics formulas that consume Evidence reliability MUST use EffectiveReliability. Never raw optional reliability.
+
 **Evidence Strength (E)**  
 ```text
-E = average(Evidence.reliability) over all linked Evidence
+E = average(EffectiveReliability(e) for e in linked Evidence)
 ```
-Missing reliability → 0.5. Empty evidence list → E = 0.
+Empty evidence list → E = 0.
 
 **Source Diversity (SD)**  
 ```text
 unique_groups = set of distinct independenceGroup values among linked Evidence
 SD = |unique_groups| / max(1, |Evidence|)
 ```
-Evidence without independenceGroup share synthetic group `"unknown"`. Duplicates of same source cannot inflate SD (Invariant I6).
+Evidence without independenceGroup share synthetic group `"unknown"`.  
+`independenceGroup` is an **upstream immutable provenance attribute**. AKP never derives or modifies it.  
+Duplicates of same source cannot inflate SD (Invariant I6).
 
 **Contradiction (C)**  
 ```text
-C = sum(reliability of Evidence with type = "contradicting") / max(1, sum(all Evidence reliabilities))
+C = sum(EffectiveReliability(e) for e with type = "contradicting")
+  / max(1, sum(EffectiveReliability(e) for all linked Evidence))
 ```
 Clamped to [0,1].
 
 **Novelty (N)**  
 ```text
-N = 1 − max_cosine_similarity(embedding(this), embedding(any other Cell))
+N = 1 − max_cosine_similarity(embedding_this, embedding_other)
 ```
-No other Cells → N = 1.0. Embedding model + dimension recorded in PhysicsCalculation parameter_set.
+- Physics receives **precomputed embeddings** as input. It does not call EmbeddingProvider.
+- Zero-vector rule: cosineSimilarity(0, x) := 0; cosineSimilarity(0, 0) := 0.
+- No other Cells → N = 1.0.
+- PhysicsCalculation.inputSnapshot MUST include for each used embedding:
+  embeddingModelId, embeddingModelVersion, embeddingDimension,
+  embeddingInputHash, embeddingVectorHash, embeddingProvider.
 
 ---
 
@@ -107,27 +124,28 @@ Confidence          = Clamp(BaseEvidence × ContradictionFactor, 0, 1)
 
 ## AKP-4 Memory Resonance
 
-| Symbol | Name | Definition (MVP) | Range |
+| Symbol | Name | Exact definition | Range |
 |--------|------|------------------|-------|
-| R_f | ReflectionInfluence | fraction of Reflections referencing this Cell | [0,1] |
-| A_f | ActionInfluence | fraction of ActionIntents influenced by Cell | [0,1] |
-| C_f | CreationInfluence | fraction of new Cells listing this as parent | [0,1] |
-| L_f | RelationInfluence | see normalization below | [0,1] |
-| Q_f | RecallInfluence | fraction of successful Retrievals that returned Cell | [0,1] |
+| R_f | ReflectionInfluence | count(accepted Reflections referencing Cell) / max(1, count(all accepted Reflections)) | [0,1] |
+| A_f | ActionInfluence | count(ActionIntents influenced by Cell) / max(1, count(all ActionIntents)) | [0,1] |
+| C_f | CreationInfluence | count(new Cells listing this as parent) / max(1, count(all Cells created after this Cell)) | [0,1] |
+| L_f | RelationInfluence | accepted_outgoing / max(1, max_accepted_outgoing_in_system) | [0,1] |
+| Q_f | RecallInfluence | count(successful Retrievals that returned Cell) / max(1, count(all successful Retrievals)) | [0,1] |
 
-**L_f normalization (canonical):**
-```text
-L_f = min(1, accepted_outgoing_relations / max(1, max_accepted_outgoing_in_system))
-```
-max_accepted_outgoing_in_system = maximum observed accepted outgoing relation count across all Cells at calculation time (minimum 1).
+**L_f snapshot requirement:**  
+PhysicsCalculation.inputSnapshot MUST contain:
+- `acceptedOutgoingRelations` (this Cell)
+- `maxAcceptedOutgoingRelationsInSystem` (global at calculation time)
 
 Default weights (sum=1): w_r=0.25, w_a=0.20, w_c=0.20, w_l=0.20, w_q=0.15
 
 ```text
 R_raw = w_r·R_f + w_a·A_f + w_c·C_f + w_l·L_f + w_q·Q_f
-TemporalFactor(t) = e^(−μ · Age(t))     # default μ = 0.1
+TemporalFactor(t) = exp(−mu_temporal_factor · Age(t))
 R(t) = Clamp(R_raw × TemporalFactor(t), 0, 1)
 ```
+
+Parameter identifier is exactly `mu_temporal_factor` (default 0.1). No aliases.
 
 ---
 
@@ -157,7 +175,7 @@ T = Clamp(AccessRate × RecentInfluence × WorkingSetFactor, 0, 1)
 
 ```text
 AgeDecay    = 1 − D(t)
-SourceDecay = 1 − average(Evidence.reliability)
+SourceDecay = 1 − average(EffectiveReliability(e) for linked Evidence)
 Uncertainty = 1 − Confidence
 ```
 
@@ -169,14 +187,15 @@ H = Clamp(w_a·AgeDecay + w_c·C + w_s·SourceDecay + w_u·Uncertainty, 0, 1)
 
 ---
 
-## AKP-8 Memory Velocity
+## AKP-8 Memory Velocity (Rates, not Scores)
 
 ```text
-V_M = ΔMass / Δt
-V_R = ΔR / Δt
-V_T = ΔT / Δt
+V_M = ΔMass / Δt          unit: 1/s
+V_R = ΔR / Δt             unit: 1/s
+V_T = ΔT / Δt             unit: 1/s
 ```
-Δt = time between the two most recent PhysicsCalculations (minimum 1 s).
+Δt = time between the two most recent PhysicsCalculations (minimum 1 s).  
+Velocity values are **rates**, not Scores. They are not clamped to [0,1].
 
 ---
 
@@ -206,21 +225,16 @@ G = Clamp(Mass × R × Connectivity, 0, 1)
 
 ---
 
-## AKP-11 Dream Mode
+## AKP-11 Dream Mode (AKP-0.1 simple form)
+
+Legacy simple form retained for unit tests of basic signals.  
+**Canonical Dream Mode for production is AKP-0.2.3 Dream Mode 2.0.**
 
 ```text
-S   = existing Relation Strength between A and B (0 if none)
-T_g = min(Confidence_A, Confidence_B)
-N   = Novelty of the combination
-
-DreamScore(A,B) = Clamp(E_A · E_B · R_A · R_B · (1 − S) · N · T_g, 0, 1)
+DreamScore_simple(A,B) = Clamp(E_A · E_B · R_A · R_B · (1 − S) · N · T_g, 0, 1)
 ```
 
-**Safety Gate (all must pass):** T_g ≥ 0.4, N ≥ 0.3, S ≤ 0.5
-
-Output classification: HYPOTHESIS / CANDIDATE only. Never Fact.
-
-Mandatory output fields: source_cells, generation_method, dream_score, novelty_score, confidence, created_at, physics_version, llm_model (if used), random_seed.
+Safety Gate: T_g ≥ 0.4, N ≥ 0.3, S ≤ 0.5. Output: HYPOTHESIS / CANDIDATE only.
 
 ---
 
@@ -229,21 +243,20 @@ Mandatory output fields: source_cells, generation_method, dream_score, novelty_s
 ```text
 C = [M, E, G, H, V, Cf, R, T, N]
 ```
-(Mass, Energy, Gravity, Entropy, Velocity, Confidence, Resonance, Temperature, Novelty)
-
-This is a projection. Authoritative calculations live in PhysicsCalculation records.
+Velocity components are rates (1/s), not Scores.  
+This vector is a projection. Authoritative calculations live in PhysicsCalculation records.
 
 ---
 
 ## AKP-13 Physics Versioning
 
-Every calculation stores: physics_version, formula_version, parameter_set, timestamp, input_snapshot, output, random_seed (when used).
+Every calculation stores: physicsVersion, formulaVersion, parameterSetId, parameterSetVersion, parameterSet, timestamp, inputSnapshot (including global denominators and embedding hashes), output, randomSeed (when used).
 
 ---
 
 ## AKP-14 Explicit Prohibitions
 
-The Physics Engine may not: interpret texts, invent facts, make decisions, mutate user data, call LLMs, mutate Memory Cells, invent Trust.
+The Physics Engine may not: interpret texts, invent facts, make decisions, mutate user data, call LLMs, mutate Memory Cells, invent Trust, derive independenceGroup.
 
 It calculates. Nothing more.
 
@@ -251,4 +264,4 @@ It calculates. Nothing more.
 
 ## Status
 
-AKP 0.1.2 is fully self-contained. All formulas, primitives and defaults are defined in this document. Parameter Sets (AKP-PS-*) freeze numeric values for conformance testing.
+AKP 0.1.3 is fully self-contained. All formulas, primitives, denominators and defaults are defined in this document.
