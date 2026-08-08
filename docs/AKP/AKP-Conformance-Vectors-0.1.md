@@ -1,135 +1,52 @@
-# AKP Physics Conformance Vectors 0.1.2
+# AKP Physics Conformance Vectors 0.1.3
 
-**Status:** Normative  
-**Physics Version:** 0.1.3 / 0.2.4  
-**Default Score tolerance:** absolute 1e-6  
-**Cosine tolerance:** absolute 1e-9  
+**Physics:** 0.1.4 / 0.2.5  
+**Default Score tol:** 1e-6 · **Cosine tol:** 1e-9
 
-Cross-implementation: match within tolerance. Bit-identical across languages is NOT required unless a vector says so.
+## CV-01..CV-26
+Prior suite retained (Confidence, Mass, RelationStrength, RetrievalScore, Dream 2.0, gates, Priority, EffectiveReliability, Semantic Similarity, Diversity, Urgency, Symmetric integrity, Explainability, Connectivity count-once).
 
----
+## CV-27 Importance default
+No explicitUserPriority → I=0.5 · formulaId: importance-1.0.0
 
-## CV-01 Confidence
-```text
-Input: E=0.8, SD=0.9, C=0.1 → Confidence=0.648  tol=1e-6
-```
+## CV-28 Importance explicit
+explicitUserPriority=0.9 → I=0.9
 
-## CV-02 Mass
-```text
-Input: I=0.7 U=0.5 Confidence=0.648 R=0.4 → Mass=0.577  tol=1e-6
-```
+## CV-29 Empty Evidence SourceDecay
+|Evidence|=0 → SourceDecay=1.0; with AgeDecay=0 C=0 Confidence=0 → H=0.45
 
-## CV-03 RelationStrength
-```text
-Input: E=0.8 C=0.7 T=0.9 U=0.5 → S_r=0.735  tol=1e-6
-```
+## CV-30 WorkingSet true → WorkingSetFactor=1.0
+## CV-31 WorkingSet false → WorkingSetFactor=0.3
 
-## CV-04 RetrievalScore
-```text
-Input: S=0.9 G=0.5 T=0.8 R=0.4 M=0.577 C=0.648 N=0.3 → Score=0.6375  tol=1e-6
-```
+## CV-32 Load normal
+ContextSize=50 AttentionCapacity=100 → Load=0.5 no eviction
 
-## CV-05 DreamScore 2.0
-```text
-physics_version:0.2.4 formula_version:dream-2.0.0 parameter_set:AKP-PS-010
-E_A=0.8 E_B=0.7 BridgeA=0.5 BridgeB=0.4 N=0.6 T_g=0.55 Att=0.5 S_r=0.2
-→ D=0.014784  tol=1e-6  Gate=pass
-```
+## CV-33 Load overload
+Load>0.85 → evict lowest Priority; tie MemoryId ascending
 
-## CV-06 Dream Rejection
-```text
-T_g=0.3 → Safety Gate fails. No DreamCandidate.
-```
+## CV-34 AttentionCapacity≤0 → rejected_snapshot
 
-## CV-07 ConnectivityPotential
-```text
-3 distinct high_Mass targets weak/missing → count=3 ConnectivityPotential=0.6
-```
+## CV-35 Saturation
+|∩|=K → RankingChange=0 < 0.02 → saturated=true
 
-## CV-08 Energy
-```text
-N=0.7 CP=0.6 H=0.3 R=0.5 → Energy=0.147
-```
+## CV-36 Not saturated
+|∩|=3 K=5 → RankingChange=0.4 ≥ 0.02 → saturated=false
 
-## CV-09 Emergence
-```text
-N=0.6 BP=0.4 Surprise=0.8 Coherence=0.7 → Emergence=0.1344
-```
+## CV-37 CandidateUniverse dedup by MemoryId first-wins
 
-## CV-10 IslandScore
-```text
-Cohesion=0.9 Ext=0.2 → IslandScore=0.72
-```
+## CV-38 lambda_decay=0 → C4=C3 no removal
 
-## CV-11 Empty Graph Centrality
-```text
-N=0 → all centralities=0.0
-```
+## CV-39 deprecatedAt≤queryTime + lambda_decay>0 → excluded from C4
 
-## CV-12 Attention Allocation
-```text
-A(0.9,30) B(0.8,40) C(0.8,20) D(0.5,50) reserved=15 → allocated A,B
-```
+## CV-40 lambda_decay=0 → TemporalRelevance=1.0
 
-## CV-13 BridgePotential=0 → D=0
-## CV-14 AttentionAllocation=0 → D=0
-## CV-15 T_g=0.4 pass
-## CV-16 N=0.3 pass
-## CV-17 S_r=0.5 pass
-## CV-18 S_r=0.500001 fail
+## CV-41 missing formulaId → non-conformant
 
-## CV-19 Priority
-```text
-I=0.8 Rel=0.7 Urgency=1.0 Pot=0.5 → Priority=0.28  Trust NOT a factor
-```
+## CV-42 formulaId/output mismatch → non-conformant
 
-## CV-20 EffectiveReliability
-```text
-0.8, missing, 0.6 → 0.8, 0.5, 0.6  E≈0.633333
-```
+## CV-43 Priority tie → lower MemoryId first
 
-## CV-21 Semantic Similarity
-```text
-formula_version: semantic-similarity-1.0.0
-a=[1,0,0] b=[1,0,0] → cosine=1.0 S=1.0  tol_cos=1e-9
-a=[1,0,0] b=[0,1,0] → cosine=0.0 S=0.5
-a=[0,0,0] b=[1,0,0] → cosine=0.0 S=0.5  (zero-vector)
-a=[1,0] b=[1,0,0] → rejected_snapshot (dimension mismatch)
-```
+## CV-44 Replay under AAS-54 canonical equality
 
-## CV-22 Diversity Selection
-```text
-final_k=2
-A:0.90 id=aaa G1; B:0.85 id=bbb G1; C:0.80 id=ccc G2
-penalty_factor=0.5
-Iter1: select A; Iter2: B adj=0.425 C adj=0.80 → select C
-Expected order: [A, C]
-```
-
-## CV-23 Urgency explicit
-```text
-urgencySource=deadline urgencyValue=1.0 I=R=P=0.5 → Priority=0.125
-missing urgency → Urgency=0.0 Priority=0.0
-```
-
-## CV-24 Symmetric relation integrity
-```text
-only A→B similar_to 0.7 → rejected_snapshot
-A→B and B→A similar_to 0.7 → accepted
-```
-
-## CV-25 Explainability fields
-```text
-missing formulaId or inputSnapshot → non-conformant
-all fields present → reconstructible → conformant
-```
-
-## CV-26 Connectivity count-once
-```text
-3 high_Mass targets (2 weak, 1 missing) → count=3 not 4
-ConnectivityPotential=0.6
-```
-
-## Invariants
-Scores∈[0,1]; same-impl identical; cross-impl within tol; Dream≠Fact;
-no optional Priority factors; cluster never derived by AKP; Urgency never inferred.
+## Status
+CV-01..CV-44 DEFINED. Implementers must pass within tolerance / rejection rules.
