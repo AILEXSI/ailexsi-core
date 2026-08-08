@@ -5,4 +5,10 @@
  * and uses EventStore as the sole write path.
  */
 
-export {};
+export {
+  MemoryDomain,
+  type CreateMemoryCommand,
+  type UpdateMemoryCommand,
+  type LifecycleCommand,
+  type MemoryEventType,
+} from "./memory-domain.js";
