@@ -4,7 +4,7 @@
 
 **Version:** 0.2.0  
 **Status:** Normative  
-**Dependencies:** ACS 0.1.1, AKP 0.1.3, AKP 0.2.4, AAS 0.1.2, AAS-Buch2 0.3.3
+**Dependencies:** ACS 0.1.1, AKP 0.1.4, AKP 0.2.5, AAS 0.1.2, AAS-Buch2 0.3.4
 
 ---
 
