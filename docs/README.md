@@ -57,14 +57,26 @@ Higher overrides lower. Canonical documents are the single source of truth.
 | Patch 0.3 Anti-Deletion | `PATCHES/Normative-Patch-0.3-Anti-Deletion.md` | 0.3 |
 | Surface Check Script | `scripts/normative-surface-check.mjs` | 0.1 |
 
-## Phase 04
+## Phase Status
+
+| Phase | Name | Status |
+|-------|------|--------|
+| 04 | Physics Conformance Suite (CV-01..CV-44) | **COMPLETE / GREEN** |
+| 05 | Database + Event Store | **NEXT** (authoritative) |
+| 06 | Memory Domain | Subsequent |
+
+Authoritative order: **AMBC 0.1.2 §8** + **Build Manifest 0.2.1**. Do not renumber.
+
+## Phase 04 (COMPLETE)
 
 ```bash
 node scripts/normative-surface-check.mjs
 node phase04/run.mjs
 ```
 
-Authoritative result: `phase04-report.json`.
+- Default: verify-only, does **not** write `phase04-report.json` (clean worktree).
+- Optional: `node phase04/run.mjs --write` for stable report with provenance.
+- Authoritative result after `--write`: `phase04-report.json`.
 
 ## Agent Start Protocol
 
@@ -76,7 +88,7 @@ STEP 3  Blocker Report → update docs/AUDIT/Blocker-Ledger.md (append-only)
 STEP 3b node scripts/normative-surface-check.mjs   # must PASS
 
 No implementation until STEP 3b PASSes and blockers are resolved honestly.
-Physics Conformance Suite (AMBC Phase 04) must be green before any further implementation.
+Physics Conformance Suite (AMBC Phase 04) must remain green before any further implementation.
 
 BLOCKERS = 0 requires:
   - Ledger rules satisfied
