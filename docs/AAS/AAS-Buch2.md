@@ -2,27 +2,35 @@
 
 ## Buch 2 – Canonical Domain Models & Event Contracts
 
-**Version:** 0.3.1 (self-contained, Identity types defined)  
+**Version:** 0.3.2 (Timestamp/UUID/Event/Content/Evidence closed)  
 **Status:** Normative  
-**Dependencies:** ACS 0.1, AKP 0.2.2, AAS 0.1.2
+**Dependencies:** ACS 0.1.1, AKP 0.1.3, AKP 0.2.3, AAS 0.1.2
 
 ---
 
 ## AAS-26 Canonical Model Principle
 
 For every Domain Object there exists **one canonical definition**.  
-This definition is independent of TypeScript, Python, PostgreSQL, Neo4j, Qdrant, LLM, Frontend or API Framework.
-
-Implementations are generated from the canonical definition.  
-No second “source of truth” is allowed.
+Independent of TypeScript, Python, PostgreSQL, Neo4j, Qdrant, LLM, Frontend or API Framework.  
+No second source of truth is allowed.
 
 ---
 
 ## AAS-27 Common Types
 
 ```ts
-type UUID = string;                    // UUID v4
-type Timestamp = string;               // ISO-8601 UTC
+type UUID = string;
+// UUID v4 generation permitted ONLY at command-creation boundaries,
+// before the event is persisted.
+// All persistent entity identifiers MUST originate from the canonical event
+// or deterministic input.
+// Projection replay MUST NEVER generate a new UUID for an existing entity.
+
+type Timestamp = string;
+// Canonical: RFC3339 UTC, exactly 3 fractional digits, mandatory Z suffix.
+// Example: 2026-08-08T01:26:00.000Z
+// No timezone offsets. No leap-second representation.
+
 type Score = number;                   // 0 <= Score <= 1
 type Version = number;                 // positive integer
 type PhysicsVersion = string;
@@ -86,9 +94,15 @@ interface Evidence {
   locator?: string;
   capturedAt: Timestamp;
   reliability?: Score;
-  independenceGroup?: string;
+  independenceGroup?: string;  // upstream immutable; AKP never derives
 }
 ```
+
+**EffectiveReliability (used by all Physics formulas):**
+```text
+EffectiveReliability(e) = e.reliability if present else 0.5
+```
+`independenceGroup` is an upstream immutable provenance attribute. If absent, group = `"unknown"`.
 
 ---
 
@@ -105,16 +119,15 @@ interface MemoryIdentity {
 
 ---
 
-## AAS-32 MemoryContent
+## AAS-32 MemoryContent (discriminated union)
 
 ```ts
-interface MemoryContent {
-  type: "text" | "structured" | "document" | "media" | "reference";
-  text?: string;
-  structuredData?: Record<string, unknown>;
-  mimeType?: string;
-  storageRef?: string;
-}
+type MemoryContent =
+  | { type: "text"; text: string; mimeType?: string }
+  | { type: "structured"; structuredData: Record<string, unknown> }
+  | { type: "document"; storageRef: string; mimeType?: string }
+  | { type: "media"; storageRef: string; mimeType?: string }
+  | { type: "reference"; storageRef: string };
 ```
 
 ---
@@ -173,7 +186,7 @@ interface CognitiveStateVector {
   energy: Score;
   gravity: Score;
   entropy: Score;
-  velocity: { mass: number; resonance: number; temperature: number; };
+  velocity: { mass: number; resonance: number; temperature: number; }; // rates (1/s), NOT Scores
   confidence: Score;
   resonance: Score;
   temperature: Score;
@@ -450,6 +463,8 @@ interface PhysicsCalculation {
   calculationType: string;
   physicsVersion: PhysicsVersion;
   formulaVersion: FormulaVersion;
+  parameterSetId: string;
+  parameterSetVersion: string;
   parameterSet: Record<string, PhysicsParameter>;
   inputSnapshot: Record<string, unknown>;
   output: Record<string, unknown>;
@@ -492,6 +507,24 @@ interface EventEnvelope<T = unknown> {
   environment: "development" | "test" | "production";
 }
 ```
+
+**aggregateVersion rules:**
+- First event of an aggregate MUST have aggregateVersion = 1.
+- Every subsequent event MUST equal previousAggregateVersion + 1.
+- version < expected → duplicate/replay candidate
+- version = expected → accepted
+- version > expected → ordering violation; reject/quarantine
+
+**idempotencyKey rules:**
+- Uniquely identifies a write command.
+- MUST be globally unique within Event Store retention period.
+- Repeated submission with same key MUST produce original command result and MUST NOT append another event.
+- Same key with different command payload is an integrity violation.
+
+**UUID generation rule:**
+- UUID v4 generation permitted ONLY at command-creation boundaries, before the event is persisted.
+- Projection replay MUST NEVER generate a new UUID for an existing entity.
+- All persistent entity identifiers MUST originate from the canonical event or deterministic input.
 
 ---
 
