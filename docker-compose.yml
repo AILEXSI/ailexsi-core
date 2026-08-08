@@ -1,0 +1,23 @@
+# Minimal PostgreSQL + pgvector for Phase 05 Event Store development & tests.
+# ABS binding stack: PostgreSQL + pgvector.
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    container_name: ailexsi-postgres
+    environment:
+      POSTGRES_USER: ailexsi
+      POSTGRES_PASSWORD: ailexsi
+      POSTGRES_DB: ailexsi
+    ports:
+      - "5432:5432"
+    volumes:
+      - ailexsi_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ailexsi -d ailexsi"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  ailexsi_pgdata:
