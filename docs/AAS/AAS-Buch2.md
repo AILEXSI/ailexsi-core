@@ -2,7 +2,7 @@
 
 ## Buch 2 – Canonical Domain Models & Event Contracts
 
-**Version:** 0.3.3 (Replay equality, idempotency unified, explainability)  
+**Version:** 0.3.4 (full domain model restored + Replay Equality + formulaId)  
 **Status:** Normative  
 **Dependencies:** ACS 0.1.1, AKP 0.1.3, AKP 0.2.4, AAS 0.1.2
 
@@ -13,6 +13,8 @@
 For every Domain Object there exists **one canonical definition**.  
 Independent of TypeScript, Python, PostgreSQL, Neo4j, Qdrant, LLM, Frontend or API Framework.  
 No second source of truth is allowed.
+
+This document is fully self-contained. No external historical document is required to implement the canonical model.
 
 ---
 
@@ -45,6 +47,8 @@ type SourceType =
 
 ## AAS-28 TemporalMetadata
 
+All fields required. `validTo` and `deprecatedAt` may be `null`.
+
 ```ts
 interface TemporalMetadata {
   createdAt: Timestamp;
@@ -55,6 +59,12 @@ interface TemporalMetadata {
   deprecatedAt: Timestamp | null;
 }
 ```
+
+**Invariants**
+- `validFrom <= validTo` when `validTo !== null`
+- `confirmedAt >= createdAt`
+- `deprecatedAt >= createdAt` when not null
+- Uncertainty is expressed by `null`, never by fantasy dates
 
 ---
 
@@ -70,6 +80,8 @@ interface Provenance {
 }
 ```
 
+**Invariant (ACS Law 1):** Provenance must never be empty / missing.
+
 ---
 
 ## AAS-30 Evidence
@@ -84,12 +96,15 @@ interface Evidence {
   locator?: string;
   capturedAt: Timestamp;
   reliability?: Score;
-  independenceGroup?: string;
+  independenceGroup?: string;  // upstream immutable; AKP never derives
 }
 ```
 
-**EffectiveReliability:** `e.reliability if present else 0.5`  
-`independenceGroup` is upstream immutable. If absent, group = `"unknown"`.
+**EffectiveReliability (used by all Physics formulas):**
+```text
+EffectiveReliability(e) = e.reliability if present else 0.5
+```
+`independenceGroup` is an upstream immutable provenance attribute. If absent, group = `"unknown"`.
 
 ---
 
@@ -119,18 +134,341 @@ type MemoryContent =
 
 ---
 
-## AAS-33..48 Domain types
+## AAS-33 MemoryContext
 
-MemoryContext, MemoryMeaning, Lifecycle, CognitiveStateVector (velocity = rates 1/s not Scores),
-MemoryCell, MemoryVersion, RelationRef, RelationType, KnowledgeRelation, TrustAssessment,
-IdentityValue/Goal/Role/Principle, IdentitySnapshot, Reflection, Hypothesis, DreamCandidate
-(DreamCandidate ≠ Fact), CreativeCandidate, ActionIntent — as previously defined in 0.3.2.
+```ts
+interface MemoryContext {
+  domain?: string;
+  project?: string;
+  location?: string;
+  participants?: string[];
+  tags?: string[];
+  sessionId?: UUID;
+  parentContextId?: UUID;
+}
+```
 
 ---
 
-## AAS-49 PhysicsCalculation
+## AAS-34 MemoryMeaning
 
 ```ts
+interface MemoryMeaning {
+  summary?: string;
+  concepts?: string[];
+  themes?: string[];
+  interpretation?: string;
+  generatedBy?: string;
+  generatedAt?: Timestamp;
+}
+```
+
+---
+
+## AAS-35 Lifecycle
+
+```ts
+type LifecycleState =
+  | "active" | "dormant" | "archived" | "dream_candidate" | "hypothesis";
+
+interface LifecycleMetadata {
+  state: LifecycleState;
+  changedAt: Timestamp;
+  reason?: string;
+}
+```
+
+---
+
+## AAS-36 CognitiveStateVector
+
+```ts
+interface CognitiveStateVector {
+  mass: Score;
+  energy: Score;
+  gravity: Score;
+  entropy: Score;
+  velocity: { mass: number; resonance: number; temperature: number; }; // rates (1/s), NOT Scores
+  confidence: Score;
+  resonance: Score;
+  temperature: Score;
+  novelty: Score;
+  calculatedAt: Timestamp;
+  physicsVersion: PhysicsVersion;
+  formulaVersion: FormulaVersion;
+}
+```
+
+Note: This is a **projection**. Authoritative calculation lives in `PhysicsCalculation`.
+
+---
+
+## AAS-37 MemoryCell (canonical)
+
+```ts
+interface MemoryCell {
+  identity: MemoryIdentity;
+  content: MemoryContent;
+  context: MemoryContext;
+  meaning?: MemoryMeaning;
+  provenance: Provenance;
+  evidence: Evidence[];
+  lifecycle: LifecycleMetadata;
+  timestamps: TemporalMetadata;
+  cognitiveState: CognitiveStateVector;
+  relationRefs: RelationRef[];
+  currentVersion: Version;
+}
+```
+
+---
+
+## AAS-38 MemoryVersion
+
+```ts
+interface MemoryVersion {
+  memoryId: UUID;
+  version: Version;
+  content: MemoryContent;
+  context: MemoryContext;
+  meaning?: MemoryMeaning;
+  provenance: Provenance;
+  evidence: Evidence[];
+  timestamps: TemporalMetadata;
+  createdAt: Timestamp;
+  createdBy: string;
+  previousVersion?: Version;
+  changeReason?: string;
+}
+```
+
+---
+
+## AAS-39 RelationRef
+
+```ts
+interface RelationRef {
+  relationId: UUID;
+  targetMemoryId: UUID;
+  type: RelationType;
+  direction: "outgoing" | "incoming";
+}
+```
+
+---
+
+## AAS-40 RelationType
+
+```ts
+type RelationType =
+  | "supports" | "contradicts" | "extends" | "derived_from" | "inspired_by"
+  | "causes" | "caused_by" | "references" | "answers" | "asks"
+  | "belongs_to" | "part_of" | "depends_on" | "duplicates"
+  | "similar_to" | "related_to";
+```
+
+---
+
+## AAS-41 KnowledgeRelation
+
+```ts
+interface KnowledgeRelation {
+  id: UUID;
+  source: UUID;
+  target: UUID;
+  type: RelationType;
+  strength: Score;
+  evidenceIds: UUID[];
+  provenance: Provenance;
+  status: "hypothesis" | "proposed" | "accepted" | "rejected" | "deprecated";
+  createdAt: Timestamp;
+  updatedAt: Timestamp;
+  version: Version;
+}
+```
+
+---
+
+## AAS-42 TrustAssessment
+
+```ts
+interface TrustAssessment {
+  id: UUID;
+  subjectId: UUID;
+  evidenceStrength: Score;
+  sourceDiversity: Score;
+  contradiction: Score;
+  confidence: Score;
+  methodology: string;
+  physicsVersion?: PhysicsVersion;
+  createdAt: Timestamp;
+}
+```
+
+---
+
+## AAS-43 Identity Types (canonical)
+
+```ts
+interface IdentityValue {
+  id: UUID;
+  name: string;
+  description?: string;
+  weight: Score;
+  sourceMemoryIds: UUID[];
+}
+
+interface Goal {
+  id: UUID;
+  statement: string;
+  status: "active" | "paused" | "achieved" | "abandoned";
+  priority: Score;
+  targetDate?: Timestamp;
+  sourceMemoryIds: UUID[];
+}
+
+interface Role {
+  id: UUID;
+  name: string;
+  description?: string;
+  context?: string;
+}
+
+interface Principle {
+  id: UUID;
+  statement: string;
+  weight: Score;
+  sourceMemoryIds: UUID[];
+}
+```
+
+## AAS-43b IdentitySnapshot
+
+```ts
+interface IdentitySnapshot {
+  userId: UUID;
+  values: IdentityValue[];
+  goals: Goal[];
+  roles: Role[];
+  mission?: string;
+  principles: Principle[];
+  referencedMemoryIds: UUID[];
+  version: Version;
+  createdAt: Timestamp;
+}
+```
+
+---
+
+## AAS-44 Reflection
+
+```ts
+interface Reflection {
+  id: UUID;
+  sourceMemoryIds: UUID[];
+  type: "pattern" | "trend" | "contradiction" | "insight" | "question";
+  content: string;
+  confidence: Score;
+  evidenceIds: UUID[];
+  createdAt: Timestamp;
+  physicsVersion?: PhysicsVersion;
+  status: "generated" | "reviewed" | "accepted" | "rejected";
+}
+```
+
+---
+
+## AAS-45 Hypothesis
+
+```ts
+interface Hypothesis {
+  id: UUID;
+  sourceMemoryIds: UUID[];
+  statement: string;
+  confidence: Score;
+  evidenceIds: UUID[];
+  status: "proposed" | "supported" | "rejected" | "superseded";
+  createdAt: Timestamp;
+}
+```
+
+---
+
+## AAS-46 DreamCandidate
+
+```ts
+interface DreamCandidate {
+  id: UUID;
+  sourceMemoryIds: UUID[];
+  generationMethod: string;
+  dreamScore: Score;
+  noveltyScore: Score;
+  bridgePotential: Score;
+  emergenceScore: Score;
+  confidence: Score;
+  trustGate: Score;
+  relationStrength: Score;
+  hypothesis?: Hypothesis;
+  physicsVersion: PhysicsVersion;
+  formulaVersion: FormulaVersion;
+  llmModel?: string;
+  randomSeed?: string;
+  createdAt: Timestamp;
+  status: "generated" | "reviewed" | "accepted" | "rejected";
+}
+```
+
+**Hard rule:** `DreamCandidate ≠ Fact`.
+
+---
+
+## AAS-47 CreativeCandidate
+
+```ts
+interface CreativeCandidate {
+  id: UUID;
+  sourceMemoryIds: UUID[];
+  concept: string;
+  novelty: Score;
+  emergence: Score;
+  bridgePotential: Score;
+  createdAt: Timestamp;
+  status: "generated" | "reviewed" | "accepted" | "rejected";
+}
+```
+
+---
+
+## AAS-48 ActionIntent
+
+```ts
+interface ActionIntent {
+  id: UUID;
+  sourceId: UUID;
+  description: string;
+  riskLevel: "low" | "medium" | "high";
+  requiresApproval: boolean;
+  approvedBy?: string;
+  approvedAt?: Timestamp;
+  createdAt: Timestamp;
+  status: "proposed" | "approved" | "executing" | "executed" | "rejected" | "failed";
+}
+```
+
+---
+
+## AAS-49 PhysicsCalculation + PhysicsParameter
+
+```ts
+interface PhysicsParameter {
+  name: string;
+  value: number;
+  range: { min: number; max: number } | null;
+  unit: string | null;
+  source: string;
+  version: string;
+}
+
 interface PhysicsCalculation {
   id: UUID;
   calculationType: string;
@@ -149,6 +487,13 @@ interface PhysicsCalculation {
 
 Every automatic score MUST be reconstructible from these fields.
 
+**PhysicsParameter rules:**
+- `name`, `value`, `source`, `version` are required.
+- `range` may be `null` when unbounded; otherwise both min and max must be finite numbers with min <= max.
+- `unit` may be `null` for dimensionless scores.
+- Equality: two PhysicsParameter values are equal iff name, value, range, unit, source and version are identical (value compared within absolute 1e-12 unless a Conformance Vector states otherwise).
+- Serialization: canonical JSON with sorted object keys.
+
 ---
 
 ## AAS-50 DomainEvent + EventEnvelope
@@ -166,6 +511,13 @@ interface DomainEvent<T = unknown> {
   correlationId?: UUID;
   idempotencyKey: string;
 }
+
+interface EventEnvelope<T = unknown> {
+  event: DomainEvent<T>;
+  schemaVersion: string;
+  producer: string;
+  environment: "development" | "test" | "production";
+}
 ```
 
 **aggregateVersion rules:**
@@ -175,13 +527,23 @@ interface DomainEvent<T = unknown> {
 - version = expected → accepted
 - version > expected → ordering violation; reject/quarantine
 
+**Concurrent aggregate writes (canonical):**
+- If two commands both expect the same next aggregateVersion, the first successful append wins.
+- The second command MUST receive a ConcurrencyConflict error and MUST NOT append an event.
+- Retry requires a new expected version read from the Event Store and a new idempotencyKey only when the command itself is a new logical write.
+
 **idempotencyKey rules (canonical, all documents):**
-- same idempotencyKey + identical payload → return original command result, append no new event
-- same idempotencyKey + different payload → integrity violation / reject
+- Uniquely identifies a write command.
+- MUST be globally unique within the Event Store retention period.
+- same idempotencyKey + identical payload → return original command result, append no new event.
+- same idempotencyKey + different payload → integrity violation / reject.
+- Canonical payload equality: canonical JSON serialization (sorted keys, exact Timestamp strings, null ≠ missing).
+- Concurrent submissions with the same key and identical payload MUST converge to a single persisted event.
 
 **UUID generation rule:**
 - UUID v4 generation permitted ONLY at command-creation boundaries, before the event is persisted.
 - Projection replay MUST NEVER generate a new UUID for an existing entity.
+- All persistent entity identifiers MUST originate from the canonical event or deterministic input.
 
 ---
 
@@ -207,7 +569,7 @@ Memory + Provenance + History + Knowledge + Physics + Events + Temporal Model
 After `DELETE PROJECTIONS → REPLAY EVENTS`, reconstructed state MUST equal prior state under **canonical equality**:
 
 1. **Object ordering:** maps/objects compared by sorted keys (UTF-8 lexicographic).
-2. **Array ordering:** arrays are ordered; order is significant and must match.
+2. **Array ordering:** arrays are ordered; order is significant and must match unless a field is explicitly classified UNORDERED.
 3. **Timestamps:** exact RFC3339 string equality (`2026-08-08T01:26:00.000Z`).
 4. **Numbers:** IEEE-754 binary64; Scores compared within absolute 1e-6 unless a vector states otherwise.
 5. **Identifiers:** exact string equality; Replay MUST NOT create new UUIDs for existing entities.
@@ -216,3 +578,8 @@ After `DELETE PROJECTIONS → REPLAY EVENTS`, reconstructed state MUST equal pri
 
 Projection replay MUST NEVER generate a new UUID for an existing entity.
 All persistent identifiers MUST originate from the canonical event or deterministic input.
+
+**Array classification rule:**
+Every canonical array field MUST be classified as ORDERED or UNORDERED.
+- ORDERED: the producing operation defines the order; replay preserves that order.
+- UNORDERED: independent implementations MUST sort by a documented key (default: UUID ascending, then string lexicographic) before equality comparison or persistence of projections.
