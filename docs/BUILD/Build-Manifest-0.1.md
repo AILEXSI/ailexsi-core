@@ -1,9 +1,23 @@
-# AILEXSI BUILD MANIFEST 0.2
+# AILEXSI BUILD MANIFEST 0.2.1
 
 **Status:** EXECUTABLE CHECKLIST  
-**Aligned with:** AMBC 0.1.1 Build Order  
+**Aligned with:** AMBC 0.1.2 Build Order  
 **Physics:** AKP 0.1.4 / 0.2.5  
 Phase numbers match AMBC §8 exactly.
+
+---
+
+## Governance gates (every phase)
+
+```bash
+node scripts/normative-surface-check.mjs
+```
+
+Must PASS. Failure = `BLOCKER: REGRESSION_BY_DELETION` or missing normative files.
+
+Phase 04 CV range and phase list may **only stay or expand**. Shrinking without DEFER is forbidden.
+
+Blocker closure only via COMPLETE | DEFER | SUPERSEDE per `docs/AUDIT/Blocker-Ledger.md`.
 
 ---
 
@@ -41,8 +55,9 @@ Capture → … → DELETE PROJECTIONS → REPLAY → IDENTICAL STATE.
 ## Agent Start Command
 
 ```text
-Read AMBC 0.1.1 and this Build Manifest 0.2.
-Execute STEP 0–3. Begin Phase 04 only when blockers = 0.
+Read AMBC 0.1.2 and this Build Manifest 0.2.1.
+Execute STEP 0–3b (incl. Blocker Ledger + normative-surface-check).
+Begin Phase 04 only when blockers = 0 honestly (no deletion closure).
 Phase 04 requires ALL CV-01..CV-44 green.
 Work strictly phase by phase. No free features. No architecture inventions.
 ```

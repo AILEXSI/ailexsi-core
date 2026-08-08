@@ -1,6 +1,6 @@
 # AILEXSI MASTER BUILD CONTRACT
 
-**AMBC 0.1.1**  
+**AMBC 0.1.2**  
 **Status:** EXECUTABLE / NORMATIVE  
 **Target:** First Artificial Cortex  
 **Architecture:** Modular Monolith  
@@ -18,6 +18,15 @@ ACS → AKP → AAS → ABS → AUDIT → AMBC → BUILD MANIFEST
 
 In case of conflict the higher-ranking specification applies.  
 The agent invents no own architecture, Physics or product philosophy.
+
+Governance artifacts (Anti-Deletion):
+
+```text
+docs/PATCHES/Normative-Patch-0.3-Anti-Deletion.md
+docs/AUDIT/Blocker-Ledger.md
+docs/AUDIT/Normative-Surface-Baseline-0.1.md
+scripts/normative-surface-check.mjs
+```
 
 ---
 
@@ -81,6 +90,8 @@ PostgreSQL · pgvector · Drizzle · Zod · Fastify · Next.js · pg-boss · Pin
 
 Microservices · Kubernetes · Kafka · Neo4j · dedicated Vector-DB · autonomous Agents · external Actions · Mobile · Multimodal · Federated Learning · Self-Modification · Advanced Reasoning · Enterprise Multi-Tenancy · Marketplace · own LLM / Embedding model
 
+Product DEFER of a **specified** normative requirement additionally requires a file under `docs/DEFER/` (see Normative Patch 0.3). Listing here alone does not authorize deleting ACS/AKP/AAS text.
+
 ---
 
 ## 7. Absolute Architectural Rules
@@ -123,6 +134,8 @@ Microservices · Kubernetes · Kafka · Neo4j · dedicated Vector-DB · autonomo
 
 **Hard rule:** Phases 05–22 may not begin until Phase 04 (Physics Conformance Suite) is fully green.
 
+**Gate non-shrink rule:** Phase 04 CV range and phase list may only stay or expand. Shrinking without DEFER = REGRESSION_BY_DELETION.
+
 ---
 
 ## 9. Phase Gate
@@ -135,6 +148,7 @@ pnpm lint
 pnpm test
 pnpm test:integration
 pnpm test:architecture
+node scripts/normative-surface-check.mjs
 ```
 
 Error → **STOP → FIX → TEST → CONTINUE**
@@ -147,7 +161,9 @@ Error → **STOP → FIX → TEST → CONTINUE**
 2. **Determinism Gate** (same inputs → same outputs)  
 3. **Event Replay Gate** (DELETE projections → REPLAY → identical state)  
 4. **Architecture Tests** (import prohibitions, Dream ≠ Fact, History append-only)  
-5. **Full First Artificial Cortex E2E Test**
+5. **Full First Artificial Cortex E2E Test**  
+6. **Normative Surface Gate** – `node scripts/normative-surface-check.mjs` exits 0  
+7. **Blocker Ledger honesty** – BLOCKERS = 0 only per `docs/AUDIT/Blocker-Ledger.md` rules
 
 ---
 
@@ -159,7 +175,8 @@ The agent does **not** start with code.
 STEP 0  Repository Analysis
 STEP 1  Dependency Audit
 STEP 2  Normative Cross-Check against ACS / AKP / AAS / ABS / AUDIT / AMBC / Build Manifest
-STEP 3  Blocker Report
+STEP 3  Blocker Report (update Blocker-Ledger; no closure by deletion)
+STEP 3b Run node scripts/normative-surface-check.mjs
 
 No implementation until the Blocker Report is delivered and acknowledged.
 
@@ -169,7 +186,7 @@ Only after Physics Conformance Suite is fully green may the rest of the Build Or
 After every phase the agent delivers:
 
 ```text
-PHASE | STATUS | FILES | DEPENDENCIES | TESTS | RESULTS | ARCHITECTURE DECISIONS | OPEN ISSUES | NEXT PHASE
+PHASE | STATUS | FILES | DEPENDENCIES | TESTS | RESULTS | ARCHITECTURE DECISIONS | OPEN ISSUES | NEXT PHASE | SURFACE_CHECK
 ```
 
 ---
@@ -190,7 +207,40 @@ PHASE | STATUS | FILES | DEPENDENCIES | TESTS | RESULTS | ARCHITECTURE DECISIONS
 ❌ UI before functioning Kernel
 ❌ Mark TODOs as implemented
 ❌ Disable tests
+❌ Close blockers by deleting, shortening, or relocating requirements
+❌ Shrink Phase 04 CV range or Build phases to claim readiness
+❌ Claim BLOCKERS = 0 without Ledger + Surface Check
 ```
+
+---
+
+## 13. Anti-Deletion Closure (binding)
+
+Closing a blocker by deleting, shortening, or relocating the normative requirement is a **CRITICAL VIOLATION**.
+
+Report:
+
+```text
+BLOCKER: REGRESSION_BY_DELETION
+```
+
+A blocker may only be closed by:
+
+| Close type | Evidence |
+|------------|----------|
+| COMPLETE | Commit + added/updated canonical text + CV/test if quantitative |
+| DEFER | `docs/DEFER/<name>.md` with scope, reason, must-not, reopen |
+| SUPERSEDE | Version bump + replacement; no silent drop |
+
+Before declaring BLOCKERS = 0 or Phase GREEN:
+
+1. Update `docs/AUDIT/Blocker-Ledger.md` (append-only)
+2. Run `node scripts/normative-surface-check.mjs` (must PASS)
+3. Answer: *Could an independent implementer still be blocked by something this change removed rather than specified?* If yes → not closed.
+
+**Principle:** Closure is proof of **presence**, never proof of **absence**.
+
+See: `docs/PATCHES/Normative-Patch-0.3-Anti-Deletion.md`.
 
 ---
 
@@ -207,9 +257,10 @@ Before writing or modifying implementation code:
 4. Perform repository analysis.
 5. Perform dependency audit.
 6. Cross-check against ACS → AKP → AAS → ABS → AUDIT → AMBC → BUILD MANIFEST.
-7. Produce a blocker report.
+7. Produce a blocker report; update Blocker-Ledger (append-only).
+8. Run: node scripts/normative-surface-check.mjs
 
-Do NOT implement anything before STEP 7 is complete.
+Do NOT implement anything before STEP 8 is complete and surface check PASSes.
 
 If a required formula, contract, invariant, schema,
 or architectural rule is not sufficiently defined by
@@ -218,6 +269,7 @@ the normative documents, report:
 BLOCKER: MISSING NORMATIVE DEFINITION
 
 Do not infer or invent the missing definition.
+Do not delete the requirement to clear the blocker.
 
 After blocker resolution:
 implement only according to the Build Manifest.
