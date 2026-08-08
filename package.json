@@ -2,9 +2,25 @@
   "name": "ailexsi-core",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@9.12.0",
   "scripts": {
     "phase04": "node phase04/run.mjs",
     "phase04:write": "node phase04/run.mjs --write",
-    "surface": "node scripts/normative-surface-check.mjs"
+    "surface": "node scripts/normative-surface-check.mjs",
+    "build": "pnpm -r run build",
+    "typecheck": "pnpm -r run typecheck",
+    "lint": "echo \"lint: no ESLint config yet (Phase 05 minimal)\" && exit 0",
+    "test": "vitest run --config vitest.config.ts",
+    "test:integration": "vitest run --config vitest.config.ts tests/integration",
+    "test:architecture": "vitest run --config vitest.config.ts tests/architecture",
+    "db:up": "docker compose up -d postgres",
+    "db:down": "docker compose down",
+    "db:migrate": "tsx scripts/migrate.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.4"
   }
 }
