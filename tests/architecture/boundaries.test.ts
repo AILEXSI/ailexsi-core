@@ -1,6 +1,7 @@
 /**
  * Architecture tests — ABS / AMBC import boundary rules.
  * Physics MUST NOT import infrastructure, DB, Drizzle, HTTP, Fastify.
+ * MemoryDomain MUST NOT import HTTP/UI frameworks.
  */
 
 import { describe, it, expect } from "vitest";
@@ -75,6 +76,24 @@ describe("Architecture boundaries", () => {
     for (const f of files) {
       for (const imp of importsOf(f)) {
         expect(imp).not.toMatch(/fastify|next|http|express/);
+      }
+    }
+  });
+
+  it("MemoryDomain has zero HTTP/UI framework imports", () => {
+    const files = collectTsFiles(path.join(ROOT, "packages/core/memory"));
+    for (const f of files) {
+      for (const imp of importsOf(f)) {
+        expect(imp).not.toMatch(/fastify|next|express|http\/server|koa|hapi/);
+      }
+    }
+  });
+
+  it("MemoryDomain does not import Reflection or Dream packages", () => {
+    const files = collectTsFiles(path.join(ROOT, "packages/core/memory"));
+    for (const f of files) {
+      for (const imp of importsOf(f)) {
+        expect(imp).not.toMatch(/reflection|dream|@ailexsi\/reflection|@ailexsi\/dream/);
       }
     }
   });
