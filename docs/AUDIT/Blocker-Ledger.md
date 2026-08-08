@@ -30,7 +30,7 @@
 | B-004 | 2026-08-08 | Phase 04: CV fixtures incomplete — 32/44 CVs lack unambiguous input/expectedOutput in Conformance Vectors 0.1.3 (esp. CV-01..CV-26 prior suite retained without fixtures) | closed | 2026-08-08 | COMPLETE | Conformance Vectors 0.1.4 + phase04/fixtures/CV-01..CV-44 + phase04/run.mjs |
 | B-005 | 2026-08-08 | Normative phase numbering conflict: user contract labelled Memory as Phase 05 while AMBC/Build Manifest define Phase 05 = Database + Event Store, Phase 06 = Memory | closed | 2026-08-08 | COMPLETE | Resolved by following higher-ranking AMBC 0.1.2 §8 + Build Manifest 0.2.1. No SUPERSEDE. Memory Domain remains Phase 06. README + docs/README updated to state actual order. |
 | B-006 | 2026-08-08 | Phase 04 runner missing on main (REGRESSION of B-004 evidence). phase04/run.mjs deleted and not restored; clean-checkout verification impossible | closed | 2026-08-08 | COMPLETE | phase04/run.mjs restored (commit 397a6e89). Evidence-closure runner: default verify-only, real schema-validate, expectedStatus checks, provenance. Phase 04 again reproducible from clean checkout. |
-| B-007 | 2026-08-08 | Preconditions for Memory Domain not met: no Event Store, no contracts package, no TypeScript workspace, no repository abstractions | open | | | Correct next phase per Build Manifest is Phase 05 (Database + Event Store). Memory is Phase 06. B-007 closes when Phase 05 delivers the required infrastructure. |
+| B-007 | 2026-08-08 | Preconditions for Memory Domain not met: no Event Store, no contracts package, no TypeScript workspace, no repository abstractions | closed | 2026-08-08 | COMPLETE | Phase 05 COMPLETE/GREEN: packages/contracts + persistence + eventstore; live Postgres integration 13/13 PASS; typecheck PASS; Phase 04 remains GREEN |
 
 ---
 
@@ -72,4 +72,4 @@ Allowed only if:
 
 Claims of BLOCKERS = 0 that fail any of the above are **invalid**.
 
-**Milestone note:** For Spec + Phase 04 gate, B-001 (runtime not started) and B-007 (Event Store not yet built) may remain open. They do not reopen B-002/B-003/B-004/B-005/B-006.
+**Milestone note:** For Spec + Phase 04/05 gate, B-001 (runtime domains not started) may remain open. B-007 closed with Phase 05 COMPLETE. Phase 06 (Memory) may proceed.
