@@ -2,7 +2,6 @@
   "name": "ailexsi-core",
   "private": true,
   "type": "module",
-  "description": "AILEXSI Core – First Artificial Cortex (spec + Phase 04 harness)",
   "scripts": {
     "phase04": "node phase04/run.mjs",
     "phase04:write": "node phase04/run.mjs --write",
